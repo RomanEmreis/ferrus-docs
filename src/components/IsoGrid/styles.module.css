@@ -1,0 +1,174 @@
+.wrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.sky {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 60%, rgba(255, 122, 26, 0.18) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 100%, rgba(148, 36, 20, 0.35) 0%, transparent 60%),
+    linear-gradient(180deg, #040507 0%, #07090c 55%, #0a0d12 100%);
+}
+
+/* Faux low-res sun — sits behind the FERRUS banner as a glowing halo */
+.sun {
+  position: absolute;
+  left: 50%;
+  top: 18%;
+  width: 340px;
+  height: 340px;
+  margin-left: -170px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 55%,
+    #ffd18b 0%,
+    #ff8c2a 35%,
+    #d84a0a 65%,
+    rgba(148, 36, 20, 0) 80%
+  );
+  filter: blur(0.5px);
+  opacity: 0.42;
+  mask-image:
+    linear-gradient(180deg, #000 0%, #000 55%, transparent 56%),
+    repeating-linear-gradient(
+      180deg,
+      #000 0 12px,
+      transparent 12px 16px
+    );
+  -webkit-mask-image:
+    linear-gradient(180deg, #000 0%, #000 55%, transparent 56%),
+    repeating-linear-gradient(
+      180deg,
+      #000 0 12px,
+      transparent 12px 16px
+    );
+  -webkit-mask-composite: source-in;
+          mask-composite: intersect;
+  box-shadow: 0 0 60px rgba(255, 122, 26, 0.35);
+}
+
+/* Perspective grid that scrolls forward, giving the illusion of motion.
+   Starts below the hero text so it never overlaps the CTA buttons. */
+.gridStage {
+  position: absolute;
+  left: 50%;
+  right: 0;
+  bottom: 0;
+  top: 72%;
+  width: 200%;
+  margin-left: -100%;
+  perspective: 420px;
+  perspective-origin: 50% 0%;
+  mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    #000 22%,
+    #000 90%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    #000 22%,
+    #000 90%,
+    transparent 100%
+  );
+}
+
+.grid {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 0%;
+  transform: rotateX(62deg);
+  background-image:
+    linear-gradient(
+      90deg,
+      rgba(255, 122, 26, 0.55) 0 2px,
+      transparent 2px 60px
+    ),
+    linear-gradient(
+      0deg,
+      rgba(255, 122, 26, 0.55) 0 2px,
+      transparent 2px 60px
+    );
+  background-size: 60px 60px;
+  background-position: 0 0;
+  box-shadow: inset 0 0 120px rgba(255, 122, 26, 0.08);
+  animation: scrollGrid 4s linear infinite;
+}
+
+@keyframes scrollGrid {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 60px;
+  }
+}
+
+/* Tiny pixel stars twinkling above the horizon */
+.stars {
+  position: absolute;
+  inset: 0;
+}
+
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #ffd9a8;
+  box-shadow: 0 0 4px rgba(255, 217, 168, 0.8);
+  opacity: 0.8;
+  animation: twinkle 3.2s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+/* CRT scanlines */
+.scanlines {
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.22) 0px,
+    rgba(0, 0, 0, 0.22) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: multiply;
+  opacity: 0.6;
+}
+
+/* Dark vignette at edges so text stays readable */
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 60%,
+    transparent 40%,
+    rgba(0, 0, 0, 0.55) 85%,
+    rgba(0, 0, 0, 0.85) 100%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grid {
+    animation: none;
+  }
+  .star {
+    animation: none;
+  }
+}

@@ -1,0 +1,284 @@
+/**
+ * ferrus docs — black/orange terminal theme
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Press+Start+2P&display=swap');
+
+:root {
+  /* Orange accent mined from the ferrus terminal logo gradient: rgb(148,36,20) → rgb(226,128,18) */
+  --ferrus-orange: #ff7a1a;
+  --ferrus-orange-bright: #ffa347;
+  --ferrus-orange-dim: #c24a0f;
+  --ferrus-orange-deep: #941f0f;
+
+  --ferrus-bg: #050607;
+  --ferrus-bg-soft: #0b0d10;
+  --ferrus-bg-panel: #0f1114;
+  --ferrus-border: #1c1f24;
+  --ferrus-border-bright: #2a2e34;
+  --ferrus-text: #d8dee4;
+  --ferrus-text-muted: #8a8f98;
+  --ferrus-green: #7dd17d;
+
+  --ifm-color-primary: var(--ferrus-orange);
+  --ifm-color-primary-dark: #ef6d0d;
+  --ifm-color-primary-darker: #e2650a;
+  --ifm-color-primary-darkest: #b64f07;
+  --ifm-color-primary-light: #ff8c3b;
+  --ifm-color-primary-lighter: #ff9852;
+  --ifm-color-primary-lightest: #ffb07a;
+
+  --ifm-font-family-base: 'JetBrains Mono', ui-monospace, SFMono-Regular,
+    Menlo, Monaco, Consolas, monospace;
+  --ifm-font-family-monospace: 'JetBrains Mono', ui-monospace, SFMono-Regular,
+    Menlo, Monaco, Consolas, monospace;
+  --ifm-heading-font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular,
+    Menlo, Monaco, Consolas, monospace;
+
+  --ifm-code-font-size: 92%;
+  --ifm-code-background: #12151a;
+  --ifm-code-color: var(--ferrus-orange-bright);
+  --docusaurus-highlighted-code-line-bg: rgba(255, 122, 26, 0.12);
+
+  --ifm-background-color: var(--ferrus-bg);
+  --ifm-background-surface-color: var(--ferrus-bg-soft);
+  --ifm-navbar-background-color: rgba(5, 6, 7, 0.78);
+  --ifm-footer-background-color: #07080a;
+  --ifm-footer-link-color: var(--ferrus-text-muted);
+  --ifm-footer-title-color: var(--ferrus-orange);
+
+  --ifm-link-color: var(--ferrus-orange);
+  --ifm-link-hover-color: var(--ferrus-orange-bright);
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: var(--ferrus-orange);
+  --ifm-color-primary-dark: #ef6d0d;
+  --ifm-color-primary-darker: #e2650a;
+  --ifm-color-primary-darkest: #b64f07;
+  --ifm-color-primary-light: #ff8c3b;
+  --ifm-color-primary-lighter: #ff9852;
+  --ifm-color-primary-lightest: #ffb07a;
+
+  --ifm-background-color: var(--ferrus-bg);
+  --ifm-background-surface-color: var(--ferrus-bg-soft);
+  --ifm-navbar-background-color: rgba(5, 6, 7, 0.78);
+  --ifm-footer-background-color: #07080a;
+
+  --docusaurus-highlighted-code-line-bg: rgba(255, 122, 26, 0.15);
+}
+
+html,
+body {
+  background-color: var(--ferrus-bg);
+  color: var(--ferrus-text);
+}
+
+/* faint scanline / noise overlay for a CRT vibe */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.018) 0px,
+    rgba(255, 255, 255, 0.018) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: screen;
+}
+
+.navbar {
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--ferrus-border);
+  box-shadow: 0 0 24px rgba(255, 122, 26, 0.05);
+}
+
+.navbar__title {
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--ferrus-orange) !important;
+  text-shadow: 0 0 12px rgba(255, 122, 26, 0.35);
+}
+
+.navbar__link {
+  color: var(--ferrus-text-muted);
+}
+
+.navbar__link:hover,
+.navbar__link--active {
+  color: var(--ferrus-orange);
+}
+
+.navbar__logo img {
+  filter: drop-shadow(0 0 4px rgba(255, 122, 26, 0.5));
+}
+
+/* Headings */
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4 {
+  color: var(--ferrus-text);
+  letter-spacing: 0.02em;
+}
+
+.markdown h1 {
+  color: var(--ferrus-orange);
+  text-shadow: 0 0 8px rgba(255, 122, 26, 0.25);
+}
+
+.markdown h2 {
+  border-bottom: 1px solid var(--ferrus-border);
+  padding-bottom: 0.35rem;
+}
+
+/* inline code */
+.markdown code:not(pre code) {
+  background-color: #12151a;
+  border: 1px solid var(--ferrus-border);
+  color: var(--ferrus-orange-bright);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+}
+
+/* code blocks */
+.theme-code-block {
+  background-color: #0a0c10 !important;
+  border: 1px solid var(--ferrus-border);
+  box-shadow: 0 0 0 1px rgba(255, 122, 26, 0.06),
+    0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.prism-code {
+  background-color: #0a0c10 !important;
+}
+
+/* buttons */
+.button--primary {
+  background-color: var(--ferrus-orange);
+  border-color: var(--ferrus-orange);
+  color: #0a0a0a !important;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 0 18px rgba(255, 122, 26, 0.35);
+}
+
+.button--primary:hover {
+  background-color: var(--ferrus-orange-bright);
+  border-color: var(--ferrus-orange-bright);
+  color: #0a0a0a !important;
+  box-shadow: 0 0 28px rgba(255, 163, 71, 0.6);
+}
+
+.button--secondary {
+  background-color: transparent;
+  border: 1px solid var(--ferrus-orange);
+  color: var(--ferrus-orange) !important;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.button--secondary:hover {
+  background-color: rgba(255, 122, 26, 0.1);
+  color: var(--ferrus-orange-bright) !important;
+}
+
+/* sidebar / menu */
+.menu__link {
+  color: var(--ferrus-text-muted);
+  border-radius: 2px;
+}
+
+.menu__link:hover {
+  color: var(--ferrus-orange);
+  background-color: rgba(255, 122, 26, 0.06);
+}
+
+.menu__link--active,
+.menu__link--active:hover {
+  color: var(--ferrus-orange);
+  background-color: rgba(255, 122, 26, 0.12);
+}
+
+.menu__list-item-collapsible:hover {
+  background-color: rgba(255, 122, 26, 0.05);
+}
+
+.table-of-contents__link--active {
+  color: var(--ferrus-orange);
+}
+
+/* footer */
+.footer--dark {
+  background-color: #07080a;
+  border-top: 1px solid var(--ferrus-border);
+}
+
+.footer__title {
+  color: var(--ferrus-orange);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.footer__link-item {
+  color: var(--ferrus-text-muted);
+}
+
+.footer__link-item:hover {
+  color: var(--ferrus-orange);
+}
+
+.footer__copyright {
+  color: var(--ferrus-text-muted);
+}
+
+/* hide TOC separators for cleaner look */
+hr {
+  border-color: var(--ferrus-border);
+}
+
+.pagination-nav__link {
+  background: #0a0c10;
+  border: 1px solid var(--ferrus-border);
+}
+
+.pagination-nav__link:hover {
+  border-color: var(--ferrus-orange);
+}
+
+.pagination-nav__sublabel {
+  color: var(--ferrus-text-muted);
+}
+
+.pagination-nav__label {
+  color: var(--ferrus-orange);
+}
+
+/* Admonitions tuned to orange */
+.alert--info,
+.alert--note,
+.theme-admonition-tip {
+  border-left-color: var(--ferrus-orange);
+}
+
+/* scrollbars */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #060708;
+}
+::-webkit-scrollbar-thumb {
+  background: #1a1d22;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ferrus-orange-deep);
+}
