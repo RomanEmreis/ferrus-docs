@@ -61,11 +61,15 @@ function Install() {
         <div className={styles.twoCol}>
           <div>
             <h3 className={styles.colTitle}>From crates.io</h3>
-            <CodeBlock language="bash">{`cargo install ferrus`}</CodeBlock>
+            <CodeBlock language="bash">{`# stable — published on crates.io
+cargo install ferrus
+# or pin an exact version:
+cargo install --locked ferrus@0.2.5-alpha.2`}</CodeBlock>
           </div>
           <div>
             <h3 className={styles.colTitle}>From source</h3>
-            <CodeBlock language="bash">{`git clone https://github.com/RomanEmreis/ferrus
+            <CodeBlock language="bash">{`# latest main — tracks the repo
+git clone https://github.com/RomanEmreis/ferrus
 cd ferrus
 cargo install --path .`}</CodeBlock>
           </div>

@@ -82,9 +82,14 @@
 
 .grid {
   position: absolute;
-  inset: 0;
+  left: 0;
+  right: 0;
+  top: -60px;   /* extra row so the loop cycles without a seam */
+  bottom: 0;
   transform-origin: 50% 0%;
-  transform: rotateX(62deg);
+  transform: rotateX(62deg) translate3d(0, 0, 0);
+  will-change: transform;
+  backface-visibility: hidden;
   background-image:
     linear-gradient(
       90deg,
@@ -99,15 +104,15 @@
   background-size: 60px 60px;
   background-position: 0 0;
   box-shadow: inset 0 0 120px rgba(255, 122, 26, 0.08);
-  animation: scrollGrid 4s linear infinite;
+  animation: scrollGrid 1.6s linear infinite;
 }
 
 @keyframes scrollGrid {
-  0% {
-    background-position: 0 0;
+  from {
+    transform: rotateX(62deg) translate3d(0, 0, 0);
   }
-  100% {
-    background-position: 0 60px;
+  to {
+    transform: rotateX(62deg) translate3d(0, 60px, 0);
   }
 }
 

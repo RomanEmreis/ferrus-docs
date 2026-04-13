@@ -1,14 +1,18 @@
 .logo {
   display: inline-block;
+  max-width: 100%;
   margin: 0;
   padding: 0;
   background: transparent;
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   font-weight: 700;
-  font-size: clamp(0.42rem, 1.2vw, 0.95rem);
+  /* 50 chars wide, monospace ≈ 0.6em/char → clamp sized so total width
+     never exceeds ~88vw and the <pre> never has to scroll */
+  font-size: clamp(0.38rem, 2.6vw, 1.05rem);
   line-height: 1.05;
   letter-spacing: 0;
   white-space: pre;
+  overflow: hidden;
   text-shadow:
     0 0 6px rgba(255, 122, 26, 0.45),
     0 0 18px rgba(255, 122, 26, 0.18);
@@ -17,10 +21,4 @@
 
 .line {
   display: block;
-}
-
-@media (max-width: 480px) {
-  .logo {
-    font-size: 0.38rem;
-  }
 }
