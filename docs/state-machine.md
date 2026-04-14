@@ -36,7 +36,6 @@ role — supervisors can't `submit`, executors can't `approve`.
 |---|---|
 | `Idle` | No active task. `STATE.json` exists with state = Idle. |
 | `Executing` | Executor is implementing the task described in `TASK.md`. |
-| `Checking` | Executor is running the check gate (`cargo clippy`, tests, etc). |
 | `Addressing` | Checks failed with retries remaining, or reviewer rejected — executor is fixing. |
 | `Consultation` | Executor paused to ask the supervisor a question via `consult`. |
 | `AwaitingHuman` | Agent paused to ask a human a question via `ask_human`. |

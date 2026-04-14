@@ -18,7 +18,7 @@ state transitions.
 |---|---|---|
 | **Claude Code** | supported | `.mcp.json` |
 | **Codex** | supported | `.codex/config.toml` |
-| **Qwen Code** | experimental | agent-specific |
+| **Qwen Code** | experimental | `.qwen/settings.json` |
 
 Each backend loads `ferrus serve` as an MCP server so its tool calls
 flow back into the ferrus state machine.

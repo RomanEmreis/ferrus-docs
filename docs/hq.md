@@ -54,7 +54,7 @@ ferrus> /task
 
 ## Consultation (`/consult`)
 
-Any active executor work state (`Executing`, `Addressing`, `Checking`) can
+Any active executor work state (`Executing`, `Addressing`) can
 pause into `Consultation`. HQ spawns the configured supervisor in consult
 mode, and the executor immediately calls `wait_for_consult` to block until
 the supervisor answers via `respond_consult`.
