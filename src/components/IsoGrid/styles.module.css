@@ -19,10 +19,10 @@
 .sun {
   position: absolute;
   left: 50%;
-  top: 18%;
-  width: 340px;
-  height: 340px;
-  margin-left: -170px;
+  top: 12%;
+  width: 280px;
+  height: 280px;
+  margin-left: -140px;
   border-radius: 50%;
   background: radial-gradient(
     circle at 50% 55%,
@@ -32,7 +32,7 @@
     rgba(148, 36, 20, 0) 80%
   );
   filter: blur(0.5px);
-  opacity: 0.42;
+  opacity: 0.36;
   mask-image:
     linear-gradient(180deg, #000 0%, #000 55%, transparent 56%),
     repeating-linear-gradient(
@@ -80,14 +80,27 @@
   );
 }
 
+/* Rotated plane, sized exactly to the stage. Perspective origin is the
+   top of the stage (the "horizon") so the vanishing point is correct. */
+.gridRot {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 0%;
+  transform: rotateX(62deg);
+  transform-style: preserve-3d;
+}
+
+/* The scrolling tile layer. It's intentionally much taller than the
+   rotated plane (extends ~800px above and below) so the element's own
+   top/bottom edges are never inside the visible/mask'd region. When the
+   animation loops from translateY(60px) back to 0, the tiled pattern
+   looks identical, so the cycle is perfectly seamless — no "bounce". */
 .grid {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: -60px;   /* extra row so the loop cycles without a seam */
-  bottom: 0;
-  transform-origin: 50% 0%;
-  transform: rotateX(62deg) translate3d(0, 0, 0);
+  left: -20%;
+  right: -20%;
+  top: -800px;
+  bottom: -800px;
   will-change: transform;
   backface-visibility: hidden;
   background-image:
@@ -103,16 +116,15 @@
     );
   background-size: 60px 60px;
   background-position: 0 0;
-  box-shadow: inset 0 0 120px rgba(255, 122, 26, 0.08);
-  animation: scrollGrid 1.6s linear infinite;
+  animation: scrollGrid 1.2s linear infinite;
 }
 
 @keyframes scrollGrid {
   from {
-    transform: rotateX(62deg) translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
   }
   to {
-    transform: rotateX(62deg) translate3d(0, 60px, 0);
+    transform: translate3d(0, 60px, 0);
   }
 }
 

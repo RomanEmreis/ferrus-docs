@@ -8,7 +8,7 @@
   font-weight: 700;
   /* 50 chars wide, monospace ≈ 0.6em/char → clamp sized so total width
      never exceeds ~88vw and the <pre> never has to scroll */
-  font-size: clamp(0.38rem, 2.6vw, 1.05rem);
+  font-size: clamp(0.44rem, 2.8vw, 1.3rem);
   line-height: 1.05;
   letter-spacing: 0;
   white-space: pre;
