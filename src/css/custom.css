@@ -92,9 +92,24 @@ body::before {
 }
 
 .navbar {
-  backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--ferrus-border);
   box-shadow: 0 0 24px rgba(255, 122, 26, 0.05);
+}
+
+/*
+ * Apply backdrop blur on a pseudo-element rather than .navbar directly.
+ * backdrop-filter on .navbar would turn it into a containing block for its
+ * fixed descendants, which collapses the mobile sidebar (.navbar-sidebar)
+ * to navbar height and hides the menu items on iOS Safari (iPhone 16 Pro Max).
+ */
+.navbar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
 }
 
 .navbar__title {
