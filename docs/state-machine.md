@@ -15,16 +15,20 @@ disk and agents are stateless between spawns.
 
 ```text
 Idle
- └─► Executing      ← create_task (Supervisor)
-       └─► Checking ← check (Executor, pass)
-             ├─► Consultation ← consult (Executor)
-             │     └─► (restore previous state) ← wait_for_consult
-             ├─► [FAIL, retries < max] Addressing → check again
-             ├─► [FAIL, retries ≥ max] Failed
-             └─► Reviewing ← submit (Executor)
-                   ├─► [REJECT] Addressing → check loop (retries reset)
-                   │     └─► [cycles ≥ max] Failed
-                   └─► Complete ← approve (Supervisor)
+ └─► Executing                              ← create_task
+       ├─► Consultation                     ← consult
+       │     └─► Executing                  ← wait_for_consult
+       ├─► Executing                        ← check / submit (final check failed, retries < max)
+       ├─► Failed                           ← check / submit (final check failed, retries ≥ max)
+       └─► Reviewing                        ← submit (final check passed)
+             ├─► Complete                   ← approve
+             ├─► Failed                     ← reject (cycles ≥ max)
+             └─► Addressing                 ← reject (cycles < max)
+                   ├─► Consultation         ← consult
+                   │     └─► Addressing     ← wait_for_consult
+                   ├─► Addressing           ← check / submit (final check failed, retries < max)
+                   ├─► Failed               ← check / submit (final check failed, retries ≥ max)
+                   └─► Reviewing            ← submit (final check passed)
 ```
 
 Every transition is explicit and gated by a tool call from the right
@@ -36,7 +40,7 @@ role — supervisors can't `submit`, executors can't `approve`.
 |---|---|
 | `Idle` | No active task. `STATE.json` exists with state = Idle. |
 | `Executing` | Executor is implementing the task described in `TASK.md`. |
-| `Addressing` | Checks failed with retries remaining, or reviewer rejected — executor is fixing. |
+| `Addressing` | Reviewer rejected — executor is fixing. |
 | `Consultation` | Executor paused to ask the supervisor a question via `consult`. |
 | `AwaitingHuman` | Agent paused to ask a human a question via `ask_human`. |
 | `Reviewing` | Executor submitted work; supervisor is reading `SUBMISSION.md`. |
