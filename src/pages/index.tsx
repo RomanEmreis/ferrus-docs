@@ -40,7 +40,7 @@ function Hero() {
         <div className={styles.badgeRow}>
           <span className={styles.badge}>alpha · v0.2.5</span>
           <span className={styles.badge}>Apache-2.0</span>
-          <span className={styles.badge}>Rust 1.93+</span>
+          <span className={styles.badge}>Rust 1.95+</span>
         </div>
       </div>
     </header>
@@ -49,33 +49,41 @@ function Hero() {
 
 function Install() {
   return (
-    <section className={styles.section}>
-      <div className="container">
-        <Heading as="h2" className={styles.sectionTitle}>
-          <span className={styles.prompt}>$</span> Install
-        </Heading>
-        <p className={styles.sectionLead}>
-          ferrus ships as a single Rust crate. Install it from crates.io or
-          build from source.
-        </p>
-        <div className={styles.twoCol}>
-          <div>
-            <h3 className={styles.colTitle}>From crates.io</h3>
-            <CodeBlock language="bash">{`# stable — published on crates.io
+  <section className={styles.section}>
+    <div className="container">
+      <Heading as="h2" className={styles.sectionTitle}>
+        <span className={styles.prompt}>$</span> Install
+      </Heading>  
+
+      <p className={styles.sectionLead}>
+        ferrus ships as a single Rust crate. Install it with a single command, from crates.io or build from source.
+      </p>  
+
+      <div className={styles.installPrimary}>
+        <h3 className={styles.colTitle}>Quick install</h3>
+        <CodeBlock language="bash">{`# Linux (x86_64, aarch64). macOS and Windows support coming later
+curl -fsSL https://github.com/RomanEmreis/ferrus/releases/latest/download/install.sh | sh`}</CodeBlock>
+      </div>  
+
+      <div className={styles.twoCol}>
+        <div>
+          <h3 className={styles.colTitle}>From crates.io</h3>
+          <CodeBlock language="bash">{`# stable — published on crates.io
 cargo install ferrus
 # or pin an exact version:
-cargo install --locked ferrus@0.2.5-alpha.2`}</CodeBlock>
-          </div>
-          <div>
-            <h3 className={styles.colTitle}>From source</h3>
-            <CodeBlock language="bash">{`# latest main — tracks the repo
+cargo install --locked ferrus@0.2.5-alpha.5`}</CodeBlock>
+        </div>  
+
+        <div>
+          <h3 className={styles.colTitle}>From source</h3>
+          <CodeBlock language="bash">{`# latest main — tracks the repo
 git clone https://github.com/RomanEmreis/ferrus
 cd ferrus
 cargo install --path .`}</CodeBlock>
-          </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
   );
 }
 
