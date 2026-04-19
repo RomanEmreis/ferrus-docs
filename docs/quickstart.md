@@ -11,10 +11,16 @@ Get ferrus running against a project in under a minute.
 
 ## 1. Install
 
-Currently supports Linux (x86_64, aarch64). Other platforms are not yet supported.
+Linux/macOS
 
 ```bash
 curl -fsSL https://github.com/RomanEmreis/ferrus/releases/latest/download/install.sh | sh
+```
+
+Windows
+
+```powershell
+iwr https://github.com/RomanEmreis/ferrus/releases/latest/download/install.ps1 -useb | iex
 ```
 
 From [crates.io](https://crates.io/crates/ferrus):

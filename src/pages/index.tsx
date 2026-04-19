@@ -61,8 +61,10 @@ function Install() {
 
       <div className={styles.installPrimary}>
         <h3 className={styles.colTitle}>Quick install</h3>
-        <CodeBlock language="bash">{`# Linux (x86_64, aarch64). macOS and Windows support coming later
+        <CodeBlock language="bash">{`# Linux/macOS
 curl -fsSL https://github.com/RomanEmreis/ferrus/releases/latest/download/install.sh | sh`}</CodeBlock>
+        <CodeBlock language="powershell">{`# Windows:
+iwr https://github.com/RomanEmreis/ferrus/releases/latest/download/install.ps1 -useb | iex`}</CodeBlock>
       </div>  
 
       <div className={styles.twoCol}>
