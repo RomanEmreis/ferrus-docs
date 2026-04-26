@@ -38,7 +38,7 @@ function Hero() {
           </Link>
         </div>
         <div className={styles.badgeRow}>
-          <span className={styles.badge}>alpha · v0.2.5</span>
+          <span className={styles.badge}>alpha · v0.2.6</span>
           <span className={styles.badge}>Apache-2.0</span>
           <span className={styles.badge}>Rust 1.95+</span>
         </div>
@@ -73,7 +73,7 @@ iwr https://github.com/RomanEmreis/ferrus/releases/latest/download/install.ps1 -
           <CodeBlock language="bash">{`# stable — published on crates.io
 cargo install ferrus
 # or pin an exact version:
-cargo install --locked ferrus@0.2.5-alpha.5`}</CodeBlock>
+cargo install --locked ferrus@0.2.6-alpha.1`}</CodeBlock>
         </div>  
 
         <div>

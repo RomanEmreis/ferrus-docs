@@ -20,6 +20,7 @@ and retry/cycle counters in real time.
 | Command | Description |
 |---|---|
 | `/plan` | Free-form planning session with the supervisor (no task created). |
+| `/spec` | Draft a feature specification with the supervisor and save it as a Markdown artifact you can later feed into `/task`. |
 | `/task` | Define a task with the supervisor, then run the executor → review loop automatically. |
 | `/check` | Run the ferrus check gate from HQ. |
 | `/supervisor` | Open an interactive supervisor session (no initial prompt). |
@@ -51,6 +52,31 @@ ferrus> /task
   — no extra step needed.
 - `/reset` forces `Idle` from any state; prompts for confirmation if an
   agent is actively working.
+
+## Specifications (`/spec`)
+
+`/spec` spawns a supervisor session whose only job is to draft a feature
+specification with you and persist it. You describe what you want built; the
+supervisor pulls in the `ferrus://spec_template` resource, asks clarifying
+questions, and once you both agree, calls `create_spec` to write a Markdown
+file under the directory configured in `[spec]` (default
+`docs/specs/`).
+
+The path of the most recently approved spec is recorded in
+`.ferrus/LAST_SPEC_PATH` so HQ can hand it back to you. Point the next
+`/task` at that file and the executor implements the spec end to end.
+
+```text
+ferrus> /spec
+  └─ supervisor → you describe the feature → create_spec
+       └─ docs/specs/<name>.md written → LAST_SPEC_PATH updated
+            └─ ferrus> /task → reference the spec file → normal loop
+```
+
+`/spec` does **not** create a task or change the state machine — it's a
+pure planning artifact step. You can rerun it as many times as you want
+between tasks, and the saved Markdown is plain text you can edit or commit
+to source control.
 
 ## Consultation (`/consult`)
 
