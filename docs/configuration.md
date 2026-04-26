@@ -29,6 +29,9 @@ wait_timeout_secs  = 60  # max duration of one wait_* tool call before it polls 
 [agents]
 path = ".agents"         # root directory for agent skill files
 
+[spec]
+directory = "docs/specs" # where /spec writes approved feature specifications
+
 [lease]
 ttl_secs = 90                  # how long a claimed lease is valid without renewal
 heartbeat_interval_secs = 30   # how often agents should call heartbeat
@@ -87,6 +90,19 @@ Only one executor works on a task at a time. The mechanism is an advisory
 If an executor crashes, the lease naturally expires and a new executor can
 be resumed.
 
+## `[spec]`
+
+Where the [`/spec`](/docs/hq#specifications-spec) HQ command writes
+approved feature specifications. The supervisor drafts the spec
+interactively and calls `create_spec` to persist it as a Markdown file
+under this directory. The path of the most recent spec is also written to
+`.ferrus/LAST_SPEC_PATH` so HQ can offer it as input to the next `/task`.
+
+```toml
+[spec]
+directory = "docs/specs"  # any path inside the project; created on first write
+```
+
 ## `[hq.supervisor]` and `[hq.executor]`
 
 Which coding agent plays which role. Change these to swap backends without
@@ -114,6 +130,8 @@ Use `/model` inside HQ to update model overrides interactively.
 | `SUBMISSION.md` | Executor submission notes |
 | `QUESTION.md` / `ANSWER.md` | Human-in-the-loop Q&A |
 | `CONSULT_REQUEST.md` / `CONSULT_RESPONSE.md` | Supervisor consultation pair |
+| `SPEC_TEMPLATE.md` | Read-only feature specification template used by `/spec` |
+| `LAST_SPEC_PATH` | Path of the last spec written by `create_spec`, used for HQ handoff |
 | `logs/` | Full stdout + stderr per check run; PTY session logs per agent |
 
 `STATE.json` is written atomically (write-to-tmp + rename) so a crash

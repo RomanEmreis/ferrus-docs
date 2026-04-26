@@ -85,6 +85,16 @@ ferrus> /task
 A supervisor spawns, you describe what you want, and the full
 Executor → Reviewer loop runs automatically.
 
+For larger features it's often worth drafting a written spec first:
+
+```
+ferrus> /spec
+```
+
+The supervisor walks you through a feature specification and saves it as
+Markdown under `docs/specs/`. You can then point the next `/task` at that
+file so the executor implements directly from an approved design.
+
 :::tip
 Press **Ctrl+C** twice within 2 seconds to exit HQ.
 :::
