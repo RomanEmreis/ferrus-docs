@@ -13,8 +13,6 @@ export default function IsoGrid(): ReactNode {
       <div className={styles.sun} />
       <div className={styles.gridStage}>
         <div className={styles.grid} />
-        <div className={styles.gridFadeTop} />
-        <div className={styles.gridFadeBottom} />
       </div>
       <div className={styles.stars}>
         {Array.from({length: 40}).map((_, i) => (
