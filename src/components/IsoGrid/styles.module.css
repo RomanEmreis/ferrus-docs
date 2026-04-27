@@ -62,7 +62,6 @@
   right: -50%;
   bottom: 0;
   top: 72%;
-  contain: paint;
 }
 
 /* Single self-contained 3D layer. Both the perspective and the mask
