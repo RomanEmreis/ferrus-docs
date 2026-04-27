@@ -12,9 +12,7 @@ export default function IsoGrid(): ReactNode {
       <div className={styles.sky} />
       <div className={styles.sun} />
       <div className={styles.gridStage}>
-        <div className={styles.gridRot}>
-          <div className={styles.grid} />
-        </div>
+        <div className={styles.grid} />
       </div>
       <div className={styles.stars}>
         {Array.from({length: 40}).map((_, i) => (

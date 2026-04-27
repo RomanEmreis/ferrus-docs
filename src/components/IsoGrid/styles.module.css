@@ -80,28 +80,19 @@
   );
 }
 
-/* Rotated plane, sized exactly to the stage. Perspective origin is the
-   top of the stage (the "horizon") so the vanishing point is correct. */
-.gridRot {
+/* Rotated plane, sized exactly to the stage. The mask on .gridStage
+   hides the top/bottom edges of this box, so the rectangle itself is
+   never visible — only the tiled pattern fading into the horizon.
+   Animating background-position (rather than transform) keeps the
+   composited layer small, so the whole plane repaints every frame
+   instead of the browser tiling a giant 3D-transformed surface and
+   leaving stale tiles. The pattern repeats every 60px, so a 0 → 60px
+   cycle is perfectly seamless — no bounce. */
+.grid {
   position: absolute;
   inset: 0;
   transform-origin: 50% 0%;
   transform: rotateX(62deg);
-  transform-style: preserve-3d;
-}
-
-/* The scrolling tile layer. It's intentionally much taller than the
-   rotated plane (extends ~800px above and below) so the element's own
-   top/bottom edges are never inside the visible/mask'd region. When the
-   animation loops from translateY(60px) back to 0, the tiled pattern
-   looks identical, so the cycle is perfectly seamless — no "bounce". */
-.grid {
-  position: absolute;
-  left: -20%;
-  right: -20%;
-  top: -800px;
-  bottom: -800px;
-  will-change: transform;
   backface-visibility: hidden;
   background-image:
     linear-gradient(
@@ -121,10 +112,10 @@
 
 @keyframes scrollGrid {
   from {
-    transform: translate3d(0, 0, 0);
+    background-position: 0 0;
   }
   to {
-    transform: translate3d(0, 60px, 0);
+    background-position: 0 60px;
   }
 }
 
