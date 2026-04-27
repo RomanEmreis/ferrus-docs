@@ -53,47 +53,36 @@
 }
 
 /* Perspective grid that scrolls forward, giving the illusion of motion.
-   Starts below the hero text so it never overlaps the CTA buttons. */
+   Starts below the hero text so it never overlaps the CTA buttons.
+   Width extends past the viewport on both sides so the perspective-
+   magnified bottom never reveals the rectangle's edges. The fade is
+   done via overlay divs (.gridFadeTop / .gridFadeBottom) rather than
+   mask-image — Firefox has rendering bugs when masking a parent of a
+   3D-transformed child with tiled rasterization, which manifested as
+   adjacent tiles ending up on different animation frames. */
 .gridStage {
   position: absolute;
-  left: 50%;
-  right: 0;
+  left: -50%;
+  right: -50%;
   bottom: 0;
   top: 72%;
-  width: 200%;
-  margin-left: -100%;
-  perspective: 420px;
-  perspective-origin: 50% 0%;
-  mask-image: linear-gradient(
-    180deg,
-    transparent 0%,
-    #000 22%,
-    #000 90%,
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    180deg,
-    transparent 0%,
-    #000 22%,
-    #000 90%,
-    transparent 100%
-  );
+  contain: paint;
 }
 
-/* Rotated plane, sized exactly to the stage. The mask on .gridStage
-   hides the top/bottom edges of this box, so the rectangle itself is
-   never visible — only the tiled pattern fading into the horizon.
-   Animating background-position (rather than transform) keeps the
-   composited layer small, so the whole plane repaints every frame
-   instead of the browser tiling a giant 3D-transformed surface and
-   leaving stale tiles. The pattern repeats every 60px, so a 0 → 60px
-   cycle is perfectly seamless — no bounce. */
+/* Single self-contained 3D layer. We use the perspective() transform
+   function (instead of the parent's `perspective` property) so the
+   element owns its full 3D rendering — Firefox no longer has to
+   coordinate the 3D projection across a parent boundary, which was
+   leaving the right portion of the layer one or two animation frames
+   behind the rest on wide desktops. The pattern repeats every 60px,
+   so a background-position 0 → 60px cycle is perfectly seamless. */
 .grid {
   position: absolute;
   inset: 0;
   transform-origin: 50% 0%;
-  transform: rotateX(62deg);
+  transform: perspective(420px) rotateX(62deg);
   backface-visibility: hidden;
+  will-change: background-position;
   background-image:
     linear-gradient(
       90deg,
@@ -117,6 +106,27 @@
   to {
     background-position: 0 60px;
   }
+}
+
+/* Fade overlays replacing mask-image — see .gridStage comment. */
+.gridFadeTop,
+.gridFadeBottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+}
+
+.gridFadeTop {
+  top: 0;
+  height: 22%;
+  background: linear-gradient(180deg, #07090c 0%, rgba(7, 9, 12, 0) 100%);
+}
+
+.gridFadeBottom {
+  bottom: 0;
+  height: 10%;
+  background: linear-gradient(0deg, #0a0d12 0%, rgba(10, 13, 18, 0) 100%);
 }
 
 /* Tiny pixel stars twinkling above the horizon */
