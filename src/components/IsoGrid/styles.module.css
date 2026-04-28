@@ -109,13 +109,15 @@
     180deg,
     transparent 0%,
     #000 22%,
-    #000 100%
+    #000 90%,
+    transparent 100%
   );
   -webkit-mask-image: linear-gradient(
     180deg,
     transparent 0%,
     #000 22%,
-    #000 100%
+    #000 90%,
+    transparent 100%
   );
 }
 
