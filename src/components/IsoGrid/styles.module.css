@@ -53,17 +53,58 @@
 }
 
 /* Perspective grid that scrolls forward, giving the illusion of motion.
-   Starts below the hero text so it never overlaps the CTA buttons. */
+   Starts below the hero text so it never overlaps the CTA buttons.
+   Width extends past the viewport on both sides so the perspective-
+   magnified bottom never reveals the rectangle's edges. */
 .gridStage {
   position: absolute;
-  left: 50%;
-  right: 0;
+  left: -50%;
+  right: -50%;
   bottom: 0;
   top: 72%;
-  width: 200%;
-  margin-left: -100%;
-  perspective: 420px;
-  perspective-origin: 50% 0%;
+}
+
+/* Single self-contained 3D layer. Both the perspective and the mask
+   live on this element rather than on .gridStage:
+
+   - `transform: perspective(420px) rotateX(62deg)` keeps the projection
+     self-contained so Firefox doesn't have to coordinate the 3D math
+     across a parent boundary. That coordination was leaving the right
+     portion of the layer one or two animation frames behind the rest
+     on wide desktops, visible as a duplicated grid offset to the right.
+   - Mask on the grid itself (rather than on the parent stage) is
+     applied in pre-rotation space — the gradient fades from the top of
+     the unrotated box (which becomes the far horizon after rotation)
+     down to the bottom (the foreground). This avoids the Firefox bug
+     where masking a parent of a 3D-transformed child produced visible
+     tile seams, while still preserving the soft horizon fade.
+
+   The pattern repeats every 60px, so a background-position 0 → 60px
+   cycle is perfectly seamless — no bounce. */
+.grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: -25%;
+  transform-origin: 50% 0%;
+  transform: perspective(420px) rotateX(62deg);
+  backface-visibility: hidden;
+  will-change: background-position;
+  background-image:
+    linear-gradient(
+      90deg,
+      rgba(255, 122, 26, 0.55) 0 2px,
+      transparent 2px 60px
+    ),
+    linear-gradient(
+      0deg,
+      rgba(255, 122, 26, 0.55) 0 2px,
+      transparent 2px 60px
+    );
+  background-size: 60px 60px;
+  background-position: 0 0;
+  animation: scrollGrid 1.2s linear infinite;
   mask-image: linear-gradient(
     180deg,
     transparent 0%,
@@ -80,51 +121,12 @@
   );
 }
 
-/* Rotated plane, sized exactly to the stage. Perspective origin is the
-   top of the stage (the "horizon") so the vanishing point is correct. */
-.gridRot {
-  position: absolute;
-  inset: 0;
-  transform-origin: 50% 0%;
-  transform: rotateX(62deg);
-  transform-style: preserve-3d;
-}
-
-/* The scrolling tile layer. It's intentionally much taller than the
-   rotated plane (extends ~800px above and below) so the element's own
-   top/bottom edges are never inside the visible/mask'd region. When the
-   animation loops from translateY(60px) back to 0, the tiled pattern
-   looks identical, so the cycle is perfectly seamless — no "bounce". */
-.grid {
-  position: absolute;
-  left: -20%;
-  right: -20%;
-  top: -800px;
-  bottom: -800px;
-  will-change: transform;
-  backface-visibility: hidden;
-  background-image:
-    linear-gradient(
-      90deg,
-      rgba(255, 122, 26, 0.55) 0 2px,
-      transparent 2px 60px
-    ),
-    linear-gradient(
-      0deg,
-      rgba(255, 122, 26, 0.55) 0 2px,
-      transparent 2px 60px
-    );
-  background-size: 60px 60px;
-  background-position: 0 0;
-  animation: scrollGrid 1.2s linear infinite;
-}
-
 @keyframes scrollGrid {
   from {
-    transform: translate3d(0, 0, 0);
+    background-position: 0 0;
   }
   to {
-    transform: translate3d(0, 60px, 0);
+    background-position: 0 60px;
   }
 }
 
