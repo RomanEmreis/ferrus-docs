@@ -21,7 +21,8 @@ and retry/cycle counters in real time.
 |---|---|
 | `/plan` | Free-form planning session with the supervisor (no task created). |
 | `/spec` | Draft a feature specification with the supervisor and save it as a Markdown artifact you can later feed into `/task`. |
-| `/task` | Define a task with the supervisor, then run the executor → review loop automatically. |
+| `/milestones` | Select the current spec and milestone without creating a task. |
+| `/task` | Define a task with the supervisor, then run the executor → review loop automatically. Supports `--manual` to skip milestone resolution. |
 | `/check` | Run the ferrus check gate from HQ. |
 | `/supervisor` | Open an interactive supervisor session (no initial prompt). |
 | `/executor` | Open an interactive executor session (no initial prompt). |
@@ -53,30 +54,28 @@ ferrus> /task
 - `/reset` forces `Idle` from any state; prompts for confirmation if an
   agent is actively working.
 
-## Specifications (`/spec`)
+## Specifications and milestones (`/spec`, `/milestones`)
 
-`/spec` spawns a supervisor session whose only job is to draft a feature
-specification with you and persist it. You describe what you want built; the
-supervisor pulls in the `ferrus://spec_template` resource, asks clarifying
-questions, and once you both agree, calls `create_spec` to write a Markdown
-file under the directory configured in `[spec]` (default
-`docs/specs/`).
+`/spec` spawns a supervisor session that drafts a structured feature
+specification with you and writes it as a Markdown file under the directory
+configured in `[spec]` (default `docs/specs/`). When the supervisor exits,
+the first incomplete milestone is automatically selected.
 
-The path of the most recently approved spec is recorded in
-`.ferrus/LAST_SPEC_PATH` so HQ can hand it back to you. Point the next
-`/task` at that file and the executor implements the spec end to end.
+From there, `/task` is all you need — ferrus confirms the current milestone,
+drafts the task with milestone context, runs the executor loop, and advances
+to the next milestone automatically on `Complete`:
 
 ```text
-ferrus> /spec
-  └─ supervisor → you describe the feature → create_spec
-       └─ docs/specs/<name>.md written → LAST_SPEC_PATH updated
-            └─ ferrus> /task → reference the spec file → normal loop
+ferrus> /spec       ← draft the spec; first milestone auto-selected
+ferrus> /task       ← confirm milestone, run the loop → auto-advance on Complete
+ferrus> /task       ← next milestone, repeat
 ```
 
-`/spec` does **not** create a task or change the state machine — it's a
-pure planning artifact step. You can rerun it as many times as you want
-between tasks, and the saved Markdown is plain text you can edit or commit
-to source control.
+`/milestones` is an escape hatch: use it when you need to jump to a specific
+milestone, switch specs, or recover after manual edits.
+
+See the [Specs & Milestones guide](/docs/spec-and-milestones) for the full
+workflow, spec file format, and auto-advance behaviour.
 
 ## Consultation (`/consult`)
 
