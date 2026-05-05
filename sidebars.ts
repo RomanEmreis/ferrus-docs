@@ -5,6 +5,7 @@ const sidebars: SidebarsConfig = {
     'quickstart',
     'configuration',
     'hq',
+    'spec-and-milestones',
     'state-machine',
     'agents',
   ],
