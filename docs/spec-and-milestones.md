@@ -164,6 +164,35 @@ It presents an interactive menu:
 
 In a normal run through a spec you shouldn't need it.
 
+## Resetting the spec selection (`/reset-spec`)
+
+```
+ferrus> /reset-spec
+```
+
+`/reset-spec` clears the currently selected spec and milestone from
+`.ferrus/STATE.json` — without touching the task state, agent sessions, or
+any task files. After running it, ferrus behaves as if no spec has ever been
+selected: `/task` will run in manual mode unless you pick a spec again with
+`/milestones` or run `/spec`.
+
+Use it when:
+
+- you want to work on an ad-hoc task without a stale spec context bleeding in
+- you finished a spec and don't want the old selection to persist into
+  unrelated work
+- the selection points to a spec file that no longer exists
+
+Unlike `/reset`, which resets the entire task state to `Idle` and clears task
+files, `/reset-spec` is a targeted operation that only affects the spec and
+milestone fields in state.
+
+:::note
+`/reset` intentionally leaves the spec selection intact — it resets the
+task loop, not your planning context. Use `/reset-spec` when you
+explicitly want to drop the spec selection.
+:::
+
 ## Configuration
 
 The `[spec]` block in `ferrus.toml` controls where specs are stored:
