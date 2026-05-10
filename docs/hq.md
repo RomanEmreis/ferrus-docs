@@ -31,7 +31,8 @@ and retry/cycle counters in real time.
 | `/status` | Show task state, agent list, and session log paths. |
 | `/attach <name>` | Show log path for a running headless agent. |
 | `/stop` | Stop all running agent sessions (prompts for confirmation). |
-| `/reset` | Reset state to Idle and clear task files (prompts for confirmation). |
+| `/reset` | Reset state to Idle and clear task files (prompts for confirmation). Does **not** clear the selected spec or milestone. |
+| `/reset-spec` | Clear the selected spec and milestone without affecting task state. |
 | `/init [--agents-path]` | Initialize ferrus in the current directory. |
 | `/register` | Register agent configs (same as `ferrus register`). |
 | `/model` | Update the supervisor or executor model override. |
@@ -54,7 +55,7 @@ ferrus> /task
 - `/reset` forces `Idle` from any state; prompts for confirmation if an
   agent is actively working.
 
-## Specifications and milestones (`/spec`, `/milestones`)
+## Specifications and milestones (`/spec`, `/milestones`, `/reset-spec`)
 
 `/spec` spawns a supervisor session that drafts a structured feature
 specification with you and writes it as a Markdown file under the directory
@@ -73,6 +74,11 @@ ferrus> /task       ← next milestone, repeat
 
 `/milestones` is an escape hatch: use it when you need to jump to a specific
 milestone, switch specs, or recover after manual edits.
+
+`/reset-spec` clears the selected spec and milestone from state without
+touching the task state or task files. Use it when you want to work on an
+ad-hoc task with no spec context, or when the selection is stale and you
+don't need to pick a new one right away.
 
 See the [Specs & Milestones guide](/docs/spec-and-milestones) for the full
 workflow, spec file format, and auto-advance behaviour.
