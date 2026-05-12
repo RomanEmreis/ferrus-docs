@@ -13,10 +13,12 @@ const config: Config = {
     v4: true,
   },
 
+  url: 'https://ferrus.dev',
+  baseUrl: '/',
   // Set the production url of your site here
-  url: 'https://romanemreis.github.io',
+  //url: 'https://romanemreis.github.io',
   // For GitHub pages deployment under /<projectName>/
-  baseUrl: '/ferrus-docs/',
+  //baseUrl: '/ferrus-docs/',
 
   // GitHub pages deployment config.
   organizationName: 'RomanEmreis',
