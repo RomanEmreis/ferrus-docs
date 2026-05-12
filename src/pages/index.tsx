@@ -154,7 +154,7 @@ export default function Home(): ReactNode {
   return (
     <Layout
       title={siteConfig.title}
-      description="ferrus — deterministic orchestration of AI coding agents. A Supervisor → Executor → Reviewer state machine that turns coding agents into repeatable workers.">
+      description={siteConfig.tagline}>
       <Hero />
       <main>
         <Install />
