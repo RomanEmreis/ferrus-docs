@@ -7,6 +7,7 @@ import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 
 import FerrusLogo from '@site/src/components/FerrusLogo';
+import InstallTabs from '@site/src/components/InstallTabs';
 import IsoGrid from '@site/src/components/IsoGrid';
 
 import styles from './index.module.css';
@@ -61,10 +62,7 @@ function Install() {
 
       <div className={styles.installPrimary}>
         <h3 className={styles.colTitle}>Quick install</h3>
-        <CodeBlock language="bash">{`# Linux/macOS
-curl -fsSL https://github.com/RomanEmreis/ferrus/releases/latest/download/install.sh | sh`}</CodeBlock>
-        <CodeBlock language="powershell">{`# Windows:
-iwr https://github.com/RomanEmreis/ferrus/releases/latest/download/install.ps1 -useb | iex`}</CodeBlock>
+        <InstallTabs />
       </div>  
 
       <div className={styles.twoCol}>

@@ -5,23 +5,15 @@ sidebar_position: 1
 slug: /quickstart
 ---
 
+import InstallTabs from '@site/src/components/InstallTabs';
+
 # Quickstart
 
 Get ferrus running against a project in under a minute.
 
 ## 1. Install
 
-Linux/macOS
-
-```bash
-curl -fsSL https://github.com/RomanEmreis/ferrus/releases/latest/download/install.sh | sh
-```
-
-Windows
-
-```powershell
-iwr https://github.com/RomanEmreis/ferrus/releases/latest/download/install.ps1 -useb | iex
-```
+<InstallTabs />
 
 From [crates.io](https://crates.io/crates/ferrus):
 
