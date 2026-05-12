@@ -1,0 +1,82 @@
+.installTabs {
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  background: #0a0c10;
+  border: 1px solid var(--ferrus-border);
+  border-radius: var(--ifm-global-radius);
+  box-shadow:
+    0 0 0 1px rgba(255, 122, 26, 0.06),
+    0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.tabList {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.6rem;
+  padding: 0.45rem 0.8rem;
+  border-bottom: 1px solid rgba(255, 122, 26, 0.1);
+  background: #0a0c10;
+}
+
+.tabItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.separator {
+  color: var(--ferrus-border-bright);
+  line-height: 1;
+}
+
+.tab {
+  min-height: 1.75rem;
+  padding: 0.25rem 0.55rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ferrus-text-muted);
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.tab:hover {
+  color: var(--ferrus-orange-bright);
+}
+
+.tab[aria-selected='true'] {
+  color: var(--ferrus-orange);
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--ferrus-orange-bright);
+  outline-offset: 2px;
+}
+
+.installTabs :global(.theme-code-block) {
+  margin: 0;
+  border: 0;
+  box-shadow: none;
+}
+
+.installTabs :global(.theme-code-block pre) {
+  border-radius: 0;
+}
+
+@media (max-width: 420px) {
+  .tabList {
+    width: 100%;
+    gap: 0.35rem;
+    padding-inline: 0.55rem;
+  }
+
+  .tabItem {
+    gap: 0.35rem;
+  }
+}
