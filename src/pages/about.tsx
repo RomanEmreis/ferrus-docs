@@ -17,32 +17,37 @@ export default function About(): ReactNode {
               <span className={styles.prompt}>$</span> About
             </Heading>
 
-            <h2 className={styles.colTitle}>What is ferrus</h2>
+            <h2 className={styles.colTitle}>What is Ferrus</h2>
             <p className={styles.sectionLead}>
-              ferrus is a deterministic orchestrator for AI coding agents. It
+              Ferrus is a deterministic orchestrator for AI coding agents. It
               drives a <strong>Supervisor → Executor → Reviewer</strong> state
-              machine so that agents like Claude Code, Codex, and Qwen Code
-              can carry out real software tasks with explicit, inspectable
+              machine so agents like Claude Code, Codex, and Qwen Code can
+              carry out real software tasks through explicit, inspectable
               transitions instead of an open-ended chat.
             </p>
 
             <h2 className={styles.colTitle}>Philosophy</h2>
             <p className={styles.sectionLead}>
-              Agents should be workers, not oracles. ferrus keeps every piece
-              of state on disk in plain files — <code>TASK.md</code>,{' '}
-              <code>REVIEW.md</code>, <code>SUBMISSION.md</code> — so humans
-              and agents read the same source of truth. No hidden context, no
-              implicit memory, no magic.
+              <strong>Agents should be workers, not oracles.</strong>
+            </p>
+            <p className={styles.sectionLead}>
+              Ferrus keeps all workflow state on disk in plain files —{' '}
+              <code>TASK.md</code>, <code>REVIEW.md</code>,{' '}
+              <code>SUBMISSION.md</code> — so humans and agents operate on the
+              same source of truth. No hidden context, no implicit memory, no
+              magic.
             </p>
 
             <h2 className={styles.colTitle}>Why deterministic</h2>
             <p className={styles.sectionLead}>
-              Real software work needs repeatability. A state machine with
-              explicit transitions, retries, and review cycles is auditable,
-              resumable, and crash-safe. If a run is interrupted, the next
-              invocation picks up exactly where the last one stopped — because
-              the state lives in <code>.ferrus/</code>, not in an agent's
-              head.
+              <strong>Real software work needs repeatability.</strong>
+            </p>
+            <p className={styles.sectionLead}>
+              Explicit state transitions, retries, and review cycles make
+              execution auditable, resumable, and crash-safe. If a run is
+              interrupted, the next invocation resumes exactly where the
+              previous one stopped — because the state lives in{' '}
+              <code>.ferrus/</code>, not in an agent's head.
             </p>
 
             <h2 className={styles.colTitle}>Open source</h2>
