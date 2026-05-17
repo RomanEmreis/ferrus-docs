@@ -77,12 +77,6 @@ const config: Config = {
       },
       items: [
         {
-          type: 'docSidebar',
-          sidebarId: 'docsSidebar',
-          position: 'left',
-          label: 'Docs',
-        },
-        {
           to: '/docs/quickstart',
           label: 'Quickstart',
           position: 'left',
@@ -140,7 +134,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} ferrus · Apache-2.0`,
+      copyright: `Copyright © ${new Date().getFullYear()} ferrus · Apache-2.0 · <a href="/security">Security</a>`,
     },
     prism: {
       theme: prismThemes.vsDark,
