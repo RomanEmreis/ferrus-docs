@@ -253,6 +253,16 @@ body::before {
   color: var(--ferrus-text-muted);
 }
 
+.footer__copyright a {
+  color: inherit;
+  font-size: inherit;
+  text-decoration: none;
+}
+
+.footer__copyright a:hover {
+  color: var(--ferrus-orange);
+}
+
 /* hide TOC separators for cleaner look */
 hr {
   border-color: var(--ferrus-border);
