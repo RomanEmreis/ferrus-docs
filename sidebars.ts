@@ -8,6 +8,8 @@ const sidebars: SidebarsConfig = {
     'spec-and-milestones',
     'state-machine',
     'agents',
+    'migration',
+    'local-models',
   ],
 };
 

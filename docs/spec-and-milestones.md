@@ -52,7 +52,7 @@ Markdown file under the directory configured in `[spec]` (default
 ferrus> /spec
   └─ supervisor → you describe the feature → create_spec
        └─ docs/specs/YYYY-MM-DD-<name>.md written
-            └─ first milestone auto-selected → .ferrus/STATE.json updated
+            └─ first milestone auto-selected → project runtime state updated in ferrus.db
 ```
 
 The supervisor exits once the file is written. Nothing in the state machine
@@ -170,11 +170,11 @@ In a normal run through a spec you shouldn't need it.
 ferrus> /reset-spec
 ```
 
-`/reset-spec` clears the currently selected spec and milestone from
-`.ferrus/STATE.json` — without touching the task state, agent sessions, or
-any task files. After running it, ferrus behaves as if no spec has ever been
-selected: `/task` will run in manual mode unless you pick a spec again with
-`/milestones` or run `/spec`.
+`/reset-spec` clears the currently selected spec and milestone from the
+project's runtime state in `ferrus.db` — without touching task state, agent
+sessions, or any task files. After running it, ferrus behaves as if no spec
+has ever been selected: `/task` will run in manual mode unless you pick a
+spec again with `/milestones` or run `/spec`.
 
 Use it when:
 
@@ -183,14 +183,14 @@ Use it when:
   unrelated work
 - the selection points to a spec file that no longer exists
 
-Unlike `/reset`, which resets the entire task state to `Idle` and clears task
-files, `/reset-spec` is a targeted operation that only affects the spec and
-milestone fields in state.
+Unlike `/reset`, which force-resets resettable tasks and clears their scoped
+artifacts, `/reset-spec` is a targeted operation that only affects the
+selected-spec and selected-milestone fields in the project's runtime state.
 
 :::note
-`/reset` intentionally leaves the spec selection intact — it resets the
-task loop, not your planning context. Use `/reset-spec` when you
-explicitly want to drop the spec selection.
+`/reset` intentionally leaves the spec selection intact — it resets tasks,
+not your planning context. Use `/reset-spec` when you explicitly want to
+drop the spec selection.
 :::
 
 ## Configuration
@@ -207,7 +207,7 @@ directory = "docs/specs"  # any path inside the project; created on first write
 | File | Contents |
 |---|---|
 | `.ferrus/SPEC_TEMPLATE.md` | Read-only template the supervisor loads during `/spec` |
-| `.ferrus/LAST_SPEC_PATH` | Path of the last spec written by `create_spec` |
 
-The selected spec path and milestone ID are stored in `.ferrus/STATE.json`
-alongside the rest of the runtime state.
+The selected spec path and milestone ID are stored as project runtime state
+in `ferrus.db`, alongside the rest of the SQLite-backed runtime state — see
+[Runtime files](/docs/configuration#runtime-files).
