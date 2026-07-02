@@ -21,9 +21,9 @@ export default function About(): ReactNode {
             <p className={styles.sectionLead}>
               Ferrus is a deterministic orchestrator for AI coding agents. It
               drives a <strong>Supervisor → Executor → Reviewer</strong> state
-              machine so agents like Claude Code, Codex, and Qwen Code can
-              carry out real software tasks through explicit, inspectable
-              transitions instead of an open-ended chat.
+              machine so agents like Claude Code, Codex, Qwen Code, goose, and
+              opencode can carry out real software tasks through explicit,
+              inspectable transitions instead of an open-ended chat.
             </p>
 
             <h2 className={styles.colTitle}>Philosophy</h2>
@@ -31,9 +31,9 @@ export default function About(): ReactNode {
               <strong>Agents should be workers, not oracles.</strong>
             </p>
             <p className={styles.sectionLead}>
-              Ferrus keeps all workflow state on disk in plain files —{' '}
-              <code>TASK.md</code>, <code>REVIEW.md</code>,{' '}
-              <code>SUBMISSION.md</code> — so humans and agents operate on the
+              Ferrus keeps runtime state in SQLite and task context in plain
+              scoped Markdown files under <code>.ferrus/tasks/</code> and{' '}
+              <code>.ferrus/runs/</code>, so humans and agents operate on the
               same source of truth. No hidden context, no implicit memory, no
               magic.
             </p>
@@ -47,7 +47,7 @@ export default function About(): ReactNode {
               execution auditable, resumable, and crash-safe. If a run is
               interrupted, the next invocation resumes exactly where the
               previous one stopped — because the state lives in{' '}
-              <code>.ferrus/</code>, not in an agent's head.
+              <code>ferrus.db</code>, not in an agent's head.
             </p>
 
             <h2 className={styles.colTitle}>Open source</h2>

@@ -29,7 +29,7 @@ cd ferrus
 cargo install --path .
 ```
 
-Requires **Rust 1.93+**. ferrus is currently **alpha** — expect rough edges.
+Requires **Rust 1.95+**. ferrus is currently **alpha** — expect rough edges.
 
 ## 2. Scaffold
 
@@ -42,22 +42,30 @@ ferrus init
 This creates:
 
 - `ferrus.toml` — project config (check commands, limits, agent roles)
-- `.ferrus/` — runtime directory for state and logs (gitignored)
+- `.ferrus/` — project-local templates, task/run artifacts, agent registry,
+  and logs (gitignored)
+- `~/.ferrus/projects/<project-id>/` — machine-local project metadata and
+  the `ferrus.db` SQLite database, which is the runtime source of truth
 - `.agents/skills/ferrus*/` — skill files your coding agents will load to
   understand their role
 
 ## 3. Register your agents
 
 Tell ferrus which coding agent plays each role. Supported today:
-`claude-code`, `codex`, and experimental `qwen-code`.
+`claude-code`, `codex`, `qwen-code` (experimental), `goose` (experimental —
+convenient for local models), and `opencode` (experimental — supervisor/
+reviewer role only for now).
 
 ```bash
 ferrus register --supervisor claude-code --executor codex
 ```
 
-This writes the right MCP server config (`.mcp.json` for Claude Code,
-`.codex/config.toml` for Codex) so agents automatically pick up
-`ferrus serve` as a tool server.
+This writes the right MCP server config (`.claude/mcp-supervisor.json` /
+`.claude/mcp-executor.json` for Claude Code, `.codex/config.toml` for Codex,
+`.qwen/settings.json` for Qwen Code, `opencode.json` for opencode) so agents
+automatically pick up `ferrus serve` as a tool server. goose needs no config
+file — ferrus attaches its role-scoped MCP server at launch instead. See
+[Supported agents](/docs/agents) for backend-specific notes.
 
 ## 4. Drop into HQ
 
@@ -95,12 +103,16 @@ Press **Ctrl+C** twice within 2 seconds to exit HQ.
 
 ```text
 ferrus> /task
-  └─ supervisor → you describe the task → create_task
+  └─ supervisor → you describe the task → enqueue_task
        └─ executor (headless) → implements → check → submit
             └─ reviewer (headless) → reads submission → approve or reject
                  ├─ approved → Complete
                  └─ rejected → executor re-spawns with feedback
 ```
+
+`max_parallel_tasks` in `ferrus.toml` controls how many tasks can have an
+executor running at once — each task advances independently through its own
+state.
 
 Next, read about the [state machine](/docs/state-machine) and the
 [available HQ commands](/docs/hq).

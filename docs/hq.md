@@ -22,20 +22,24 @@ and retry/cycle counters in real time.
 | `/plan` | Free-form planning session with the supervisor (no task created). |
 | `/spec` | Draft a feature specification with the supervisor and save it as a Markdown artifact you can later feed into `/task`. |
 | `/milestones` | Select the current spec and milestone without creating a task. |
-| `/task` | Define a task with the supervisor, then run the executor → review loop automatically. Supports `--manual` to skip milestone resolution. |
-| `/check` | Run the ferrus check gate from HQ. |
+| `/task` | Queue one task from the next ready milestone with the supervisor, then run the SQLite scheduler. Supports `--manual` to skip milestone resolution and define a free-form task. |
+| `/run [--limit N]` | Plan a **batch** run: queue tasks for every ready milestone in the selected spec (or up to `--limit`) and let the scheduler dispatch executors for all of them, bounded by `max_parallel_tasks`. |
+| `/check` | Run the ferrus check gate from HQ. Supports `--force` to run regardless of task status. |
 | `/supervisor` | Open an interactive supervisor session (no initial prompt). |
 | `/executor` | Open an interactive executor session (no initial prompt). |
 | `/resume` | Manually resume the executor headlessly; also recovers consultation by relaunching both supervisor and executor. |
 | `/review` | Manually spawn supervisor in review mode (escape hatch when automatic spawning failed). |
 | `/status` | Show task state, agent list, and session log paths. |
+| `/tasks` | List SQLite task runtime rows. |
+| `/runs [--limit N]` | List recent run attempts from `ferrus.db`. |
+| `/events [--limit N] [--run <id>]` | List recent runtime events from `ferrus.db`. |
 | `/attach <name>` | Show log path for a running headless agent. |
 | `/stop` | Stop all running agent sessions (prompts for confirmation). |
-| `/reset` | Reset state to Idle and clear task files (prompts for confirmation). Does **not** clear the selected spec or milestone. |
+| `/reset` | Force-reset resettable tasks and clear their scoped artifacts (prompts for confirmation). Does **not** clear the selected spec or milestone. |
 | `/reset-spec` | Clear the selected spec and milestone without affecting task state. |
 | `/init [--agents-path]` | Initialize ferrus in the current directory. |
-| `/register` | Register agent configs (same as `ferrus register`). |
-| `/model` | Update the supervisor or executor model override. |
+| `/register [--supervisor <agent>] [--executor <agent>]` | Register agent configs (same as `ferrus register`). |
+| `/model <supervisor\|executor> <model>` | Update the supervisor or executor model override. Pass `--clear` to reset it to the agent default. |
 | `/help` | List all HQ commands. |
 | `/quit` | Exit HQ. |
 
@@ -43,17 +47,22 @@ and retry/cycle counters in real time.
 
 ```text
 ferrus> /task
-  └─ supervisor spawns → you describe the task → supervisor calls create_task
-       └─ executor spawns (headless) → implements → check → submit
+  └─ supervisor spawns → you describe the task → supervisor calls enqueue_task
+       └─ SQLite scheduler dispatches an executor (headless) → implements → check → submit
             └─ reviewer spawns (headless) → reads submission → approve or reject
                  ├─ approved → Complete
                  └─ rejected → executor re-spawns with feedback
 ```
 
-- `/task` from `Complete` silently resets to `Idle` and starts the next task
-  — no extra step needed.
-- `/reset` forces `Idle` from any state; prompts for confirmation if an
-  agent is actively working.
+Every task is an independent SQLite row; `/task` and `/run` both *queue*
+work, and a background scheduler tick (every 2 seconds) claims `pending`
+tasks and spawns executors for them, up to `max_parallel_tasks` at a time.
+With `max_parallel_tasks = 1` this behaves like the original single-task
+loop, just backed by SQLite instead of `STATE.json`.
+
+- `/reset` force-resets any **resettable** task (anything other than
+  `Complete`) and clears its scoped `.ferrus/tasks/` and `.ferrus/runs/`
+  artifacts; it prompts for confirmation if agents are actively working.
 
 ## Specifications and milestones (`/spec`, `/milestones`, `/reset-spec`)
 
@@ -74,6 +83,11 @@ ferrus> /task       ← next milestone, repeat
 
 `/milestones` is an escape hatch: use it when you need to jump to a specific
 milestone, switch specs, or recover after manual edits.
+
+Once a spec has more than one milestone with satisfied dependencies, `/run
+[--limit N]` queues all of them (or up to `--limit`) in one shot instead of
+calling `/task` repeatedly — the scheduler then works through them up to
+`max_parallel_tasks` executors at a time.
 
 `/reset-spec` clears the selected spec and milestone from state without
 touching the task state or task files. Use it when you want to work on an

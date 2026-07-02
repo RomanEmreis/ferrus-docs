@@ -98,6 +98,8 @@ const config: Config = {
             {label: 'Configuration', to: '/docs/configuration'},
             {label: 'HQ Commands', to: '/docs/hq'},
             {label: 'State Machine', to: '/docs/state-machine'},
+            {label: 'Migrating from 0.2.x', to: '/docs/migration'},
+            {label: 'Local Models', to: '/docs/local-models'},
           ],
         },
         {

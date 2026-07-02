@@ -39,10 +39,14 @@ function Hero() {
           </Link>
         </div>
         <div className={styles.badgeRow}>
-          <span className={styles.badge}>alpha · v0.2.7</span>
+          <span className={styles.badge}>alpha · v0.3.0</span>
           <span className={styles.badge}>Apache-2.0</span>
           <span className={styles.badge}>Rust 1.95+</span>
         </div>
+        <p className={styles.subTagline} style={{marginTop: '1.25rem', marginBottom: 0}}>
+          New in 0.3.0: SQLite runtime, multi-task runs, goose &amp; opencode.{' '}
+          <Link to="/docs/migration">Migrating from 0.2.x →</Link>
+        </p>
       </div>
     </header>
   );
@@ -71,7 +75,7 @@ function Install() {
           <CodeBlock language="bash">{`# stable — published on crates.io
 cargo install ferrus
 # or pin an exact version:
-cargo install --locked ferrus@0.2.7-alpha.1`}</CodeBlock>
+cargo install --locked ferrus@0.3.0-alpha.1`}</CodeBlock>
         </div>  
 
         <div>
@@ -119,15 +123,15 @@ function Features() {
     },
     {
       title: 'Agent-agnostic',
-      body: 'Claude Code, Codex, and experimental Qwen Code are interchangeable workers.',
+      body: 'Claude Code, Codex, Qwen Code, goose, and opencode are interchangeable workers — including local models.',
     },
     {
       title: 'Crash-safe',
-      body: 'State lives on disk in .ferrus/. Agents are stateless between runs — restarts resume exactly where you left off.',
+      body: 'Runtime state lives in SQLite. Agents are stateless between runs — restarts resume exactly where you left off.',
     },
     {
       title: 'No hidden context',
-      body: 'Everything the agents see lives in plain files you can read: TASK.md, REVIEW.md, SUBMISSION.md.',
+      body: 'Everything the agents see lives in plain files you can read, scoped per task under .ferrus/tasks/ and .ferrus/runs/.',
     },
   ];
   return (
