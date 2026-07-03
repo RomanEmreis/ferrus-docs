@@ -36,11 +36,19 @@ seat. What changed is what's underneath.
 ### 1. Update the binary
 
 ```bash
-cargo install ferrus --locked
+cargo install ferrus
 # or re-run install.sh / install.ps1 to pull the latest release
 ```
 
 ### 2. Run the migration command
+
+:::caution
+`ferrus migrate` removes the legacy `.ferrus/STATE.json` and `.ferrus/STATE.lock`
+as its final step, and downgrading afterwards is not supported (see
+[Rollback](#rollback)). If you want a safety net, **copy
+`.ferrus/STATE.json` somewhere before running this command** — once it's
+gone, there's nothing to fall back to.
+:::
 
 From an existing 0.2.x project directory:
 
@@ -69,9 +77,11 @@ one-time, idempotent registration step. It:
 
 ### 3. Re-run register if needed
 
-If your project predates role-scoped MCP configs (a single `.mcp.json` for
-Claude Code, from before 0.2.6), `ferrus migrate` won't rewrite that file —
-re-run registration to regenerate the current per-role config:
+If your Claude Code project still has a single root `.mcp.json` (the old
+pre-role-scoped layout, before ferrus split configs into
+`.claude/mcp-supervisor.json` and `.claude/mcp-executor.json`),
+`ferrus migrate` won't rewrite that file — re-run registration to regenerate
+the current per-role config:
 
 ```bash
 ferrus register --supervisor claude-code --executor codex
@@ -114,12 +124,14 @@ behavior — SQLite-backed instead of file-backed, but otherwise identical.
 
 ## Rollback
 
-Because `ferrus migrate` copies rather than destructively rewrites task
-artifacts (aside from removing the now-unused `STATE.json`/`STATE.lock`),
-downgrading to a 0.2.x binary on an already-migrated project is not
-supported — the 0.2.x binary doesn't know how to read `ferrus.db`. Keep a
-backup of `.ferrus/STATE.json` before migrating if you need a safety net,
-or migrate on a branch first.
+Downgrading to a 0.2.x binary on an already-migrated project is not
+supported — the 0.2.x binary doesn't know how to read `ferrus.db`, and
+`ferrus migrate` has already removed the `STATE.json`/`STATE.lock` it would
+need. `migrate` copies (rather than destructively rewrites) your task
+artifacts, so the Markdown under `.ferrus/` survives, but the runtime state
+does not roll back. If you need a genuine escape hatch, take the
+`.ferrus/STATE.json` backup called out in [step 2](#2-run-the-migration-command)
+*before* migrating, or migrate on a throwaway branch first.
 
 ## Multi-task behavior is opt-in
 
