@@ -82,6 +82,12 @@ const config: Config = {
           position: 'left',
         },
         {
+          to: '/docs/migration',
+          label: 'Migrating from 0.2.x',
+          position: 'left',
+          className: 'navbar__link--accent',
+        },
+        {
           href: 'https://github.com/RomanEmreis/ferrus',
           label: 'GitHub',
           position: 'right',

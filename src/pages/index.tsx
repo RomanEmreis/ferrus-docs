@@ -43,10 +43,6 @@ function Hero() {
           <span className={styles.badge}>Apache-2.0</span>
           <span className={styles.badge}>Rust 1.95+</span>
         </div>
-        <p className={styles.subTagline} style={{marginTop: '1.25rem', marginBottom: 0}}>
-          New in 0.3.0: SQLite runtime, multi-task runs, goose &amp; opencode.{' '}
-          <Link to="/docs/migration">Migrating from 0.2.x →</Link>
-        </p>
       </div>
     </header>
   );
