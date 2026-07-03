@@ -40,7 +40,7 @@ much they improve raw benchmark scores.
 Qwen3 in thinking mode has official recommended sampling parameters. If
 you're running below them, this is usually the highest-leverage fix:
 
-| Parameter | Recommended |
+| Parameter | Qwen3 thinking-mode recommendation |
 |---|---|
 | `temperature` | 0.6 |
 | `top_p` | 0.95 |
@@ -48,13 +48,17 @@ you're running below them, this is usually the highest-leverage fix:
 | `min_p` | 0 |
 | `presence_penalty` | 1.0–1.5 |
 
+These numbers are **Qwen3-specific** — they come from Qwen's own guidance,
+not from ferrus. For another model family (Gemma included) start from that
+model's own recommended defaults instead of copying this table verbatim.
+
 A temperature noticeably below 0.6 (e.g. 0.4) is *below* what Qwen3 was
 tuned for, and the model's own guidance warns that low temperature in
 thinking mode provokes looping and repeated output. If you're seeing
 `--max-tool-repetitions` trip or unexplained executor respawns, check
-sampling before anything else. `presence_penalty` in the 1.0–1.5 range
-pushes back directly on loop behavior; above ~1.5 risks language mixing in
-the output.
+sampling before anything else. `presence_penalty` defaults to 0 in most
+runtimes; nudging it into the 1.0–1.5 range pushes back directly on loop
+behavior, while above ~1.5 risks language mixing in the output.
 
 ## 2. Context length — probably hurting you for free
 
@@ -115,7 +119,11 @@ These are easy to conflate and have opposite recommendations:
 
 ## Recommended starting point
 
-| Parameter | Common default | Try instead |
+The sampling rows below are the **Qwen3** baseline — keep the quantization,
+context, and thinking-mode rows for any model, but swap the sampling numbers
+for your model family's own recommendations:
+
+| Parameter | Common default | Try instead (Qwen3) |
 |---|---|---|
 | Quantization | 4-bit | 6-bit |
 | Context | 256K | 32–64K |
