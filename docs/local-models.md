@@ -13,14 +13,17 @@ endpoint set with `goose configure` (see [Supported agents](/docs/agents)).
 `opencode` can also drive a local model, but only for the supervisor/
 reviewer role today.
 
-Dogfooding ferrus against local models — most extensively **Qwen3-30B-A3B**
-as the executor, with a Gemma MoE variant tested alongside it — turned up a
-handful of tuning knobs that matter far more than model choice for whether
-the executor loop stays stable. Qwen3-30B-A3B held up well end to end;
-the Gemma variant was workable but drifted on specific edge-case tasks.
-None of this is ferrus-specific — it's how these models are meant to be
-run — but it's easy to leave on defaults that actively hurt tool-calling
-reliability in an agent loop.
+Dogfooding ferrus against local models — most extensively
+[**Qwen3.6-35B-A3B**](https://huggingface.co/Qwen/Qwen3.6-35B-A3B) as the
+executor, with [**Gemma-4-26B-A4B**](https://huggingface.co/google/gemma-4-26B-A4B)
+tested alongside it — turned up a handful of tuning knobs that matter far
+more than model choice for whether the executor loop stays stable. Both are
+mixture-of-experts models with a small active path (A3B ≈ 3B active, A4B ≈
+4B active). Qwen3.6-35B-A3B held up well end to end; Gemma-4-26B-A4B was
+workable but drifted on specific edge-case tasks. None of this is
+ferrus-specific — it's how these models are meant to be run — but it's easy
+to leave on defaults that actively hurt tool-calling reliability in an agent
+loop.
 
 ## Why default settings hurt agent loops specifically
 
@@ -55,17 +58,17 @@ the output.
 
 ## 2. Context length — probably hurting you for free
 
-Qwen3-30B-A3B's native context is 32K, extendable via YaRN to 131K. Setting
-context far beyond that (e.g. 256K) forces aggressive RoPE scaling that
-measurably degrades quality on short tasks — and most agent tasks are
-short relative to the window. Unless a task genuinely needs a huge context,
-32–64K is both **more correct** and frees memory for a better quantization
-(below). This is close to a free win: better output *and* lower memory
-pressure from one change.
+The Qwen3 family's native context is around 32K, extendable via YaRN to
+~131K. Setting context far beyond that (e.g. 256K) forces aggressive RoPE
+scaling that measurably degrades quality on short tasks — and most agent
+tasks are short relative to the window. Unless a task genuinely needs a huge
+context, 32–64K is both **more correct** and frees memory for a better
+quantization (below). This is close to a free win: better output *and* lower
+memory pressure from one change.
 
 ## 3. Quantization: 4-bit → 6-bit (not 8-bit)
 
-Qwen3-30B-A3B is a mixture-of-experts model with only ~3B active
+Qwen3.6-35B-A3B is a mixture-of-experts model with only ~3B active
 parameters per forward pass. MoE models with a small active path are hit
 *harder* by quantization than a dense model of the same total size — few
 weights do the work on any given token, so each one "weighs more."
@@ -75,9 +78,9 @@ weights do the work on any given token, so each one "weighs more."
   formatting — it sharpens reliability, it doesn't add capability.
 - **6 → 8-bit** is marginal and rarely worth the extra memory/speed cost.
 
-Rough memory budget (weights only, plus KV cache on top): 4-bit ≈ 17GB,
-6-bit ≈ 25GB, 8-bit ≈ 32GB. Freeing headroom by trimming context (above)
-is what usually makes 6-bit affordable.
+Rough memory budget for a ~30–35B MoE of this class (weights only, plus KV
+cache on top): 4-bit ≈ 17–20GB, 6-bit ≈ 25–28GB, 8-bit ≈ 32–36GB. Freeing
+headroom by trimming context (above) is what usually makes 6-bit affordable.
 
 ## 4. Structured output (constrained decoding)
 
@@ -145,7 +148,8 @@ task description itself, the same way it would be for a hosted model.
 
 The same shape of tuning applies to other local backends, but check the
 specific model's own recommended sampling defaults rather than reusing
-Qwen3's numbers verbatim — they differ by model family. If a model
-performs well generally but "drifts" on specific edge cases, that's
-usually a sign to revisit sampling and context first before concluding the
-model itself is the limiting factor.
+Qwen3's numbers verbatim — they differ by model family.
+[Gemma-4-26B-A4B](https://huggingface.co/google/gemma-4-26B-A4B) is the
+clearest example from our testing: it performed well generally but "drifted"
+on specific edge cases, which is usually a sign to revisit sampling and
+context first before concluding the model itself is the limiting factor.
