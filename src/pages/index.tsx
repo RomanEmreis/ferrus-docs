@@ -71,7 +71,7 @@ function Install() {
           <CodeBlock language="bash">{`# stable — published on crates.io
 cargo install ferrus
 # or pin an exact version:
-cargo install --locked ferrus@0.3.0-alpha.1`}</CodeBlock>
+cargo install --locked ferrus@0.3.0-alpha.2`}</CodeBlock>
         </div>  
 
         <div>
