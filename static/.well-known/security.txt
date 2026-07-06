@@ -1,5 +1,17 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
 Contact: mailto:security@ferrus.dev
-Expires: 2028-05-01T23:59:59.000Z
+Expires: 2027-07-04T23:59:59.000Z
 Preferred-Languages: en
 Canonical: https://ferrus.dev/.well-known/security.txt
+Encryption: https://ferrus.dev/pgp-key.txt
 Policy: https://ferrus.dev/security
+-----BEGIN PGP SIGNATURE-----
+
+iJEEARYKADkWIQRmB22xwveoY4EySGGcw4mAATJvwgUCakvjkhsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMiwwLDMACgkQnMOJgAEyb8I92wD/XwlJwUDD4KyvvefMGxYA
+cYCXGN5thY574CwHdkJNtdYA+wUepL5JQnA8N6YIV9843k+2tMSMhIrWnMVFBtnh
+33YM
+=fkyB
+-----END PGP SIGNATURE-----

@@ -1,0 +1,6 @@
+Contact: mailto:security@ferrus.dev
+Expires: 2027-07-04T23:59:59.000Z
+Preferred-Languages: en
+Canonical: https://ferrus.dev/.well-known/security.txt
+Encryption: https://ferrus.dev/pgp-key.txt
+Policy: https://ferrus.dev/security
