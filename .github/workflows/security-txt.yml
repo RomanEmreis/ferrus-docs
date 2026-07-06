@@ -23,7 +23,7 @@ jobs:
         run: |
           set -euo pipefail
           test -s static/.well-known/security.txt
-          test -s static/.well-known/security.unsigned.txt
+          test -s security/security.unsigned.txt
           test -s static/pgp-key.txt
 
       - name: Verify PGP signature
@@ -52,7 +52,7 @@ jobs:
           from pathlib import Path
 
           signed_path = Path("static/.well-known/security.txt")
-          unsigned_path = Path("static/.well-known/security.unsigned.txt")
+          unsigned_path = Path("security/security.unsigned.txt")
 
           signed_lines = signed_path.read_bytes().splitlines(keepends=True)
           if not signed_lines or signed_lines[0].rstrip(b"\r\n") != b"-----BEGIN PGP SIGNED MESSAGE-----":
