@@ -1,0 +1,101 @@
+name: Validate security.txt
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate signed security.txt
+    runs-on: ubuntu-latest
+    env:
+      EXPECTED_FINGERPRINT: 66076DB1C2F7A863813248619CC3898001326FC2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check required files
+        run: |
+          set -euo pipefail
+          test -s static/.well-known/security.txt
+          test -s security/security.unsigned.txt
+          test -s static/pgp-key.txt
+
+      - name: Verify PGP signature
+        run: |
+          set -euo pipefail
+          tmp_dir="$(mktemp -d)"
+          trap 'rm -rf "$tmp_dir"' EXIT
+          export GNUPGHOME="$tmp_dir/gnupg"
+          mkdir "$GNUPGHOME"
+          chmod 700 "$GNUPGHOME"
+
+          actual_fingerprint="$(
+            gpg --batch --with-colons --show-keys static/pgp-key.txt \
+              | awk -F: '$1 == "fpr" { print $10; exit }'
+          )"
+          test "$actual_fingerprint" = "$EXPECTED_FINGERPRINT"
+
+          gpg --batch --dearmor --output "$tmp_dir/pgp-key.gpg" static/pgp-key.txt
+          gpgv --keyring "$tmp_dir/pgp-key.gpg" static/.well-known/security.txt
+
+      - name: Check signed payload and Expires
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          signed_path = Path("static/.well-known/security.txt")
+          unsigned_path = Path("security/security.unsigned.txt")
+
+          signed_lines = signed_path.read_bytes().splitlines(keepends=True)
+          if not signed_lines or signed_lines[0].rstrip(b"\r\n") != b"-----BEGIN PGP SIGNED MESSAGE-----":
+              raise SystemExit("security.txt is not a clear-signed PGP message")
+
+          index = 1
+          while index < len(signed_lines) and signed_lines[index].strip():
+              index += 1
+          if index == len(signed_lines):
+              raise SystemExit("security.txt is missing the signed payload")
+
+          index += 1
+          payload = []
+          while index < len(signed_lines):
+              line = signed_lines[index]
+              if line.startswith(b"-----BEGIN PGP SIGNATURE-----"):
+                  break
+              if line.startswith(b"- "):
+                  line = line[2:]
+              payload.append(line)
+              index += 1
+          else:
+              raise SystemExit("security.txt is missing the PGP signature block")
+
+          unsigned_bytes = unsigned_path.read_bytes()
+          if b"".join(payload) != unsigned_bytes:
+              raise SystemExit("signed security.txt payload differs from security.unsigned.txt")
+
+          security_txt = unsigned_bytes.decode()
+          expires_values = [
+              line.split(":", 1)[1].strip()
+              for line in security_txt.splitlines()
+              if line.lower().startswith("expires:")
+          ]
+
+          if len(expires_values) != 1:
+              raise SystemExit("security.txt must contain exactly one Expires field")
+
+          expires = datetime.fromisoformat(expires_values[0].replace("Z", "+00:00"))
+          if expires.tzinfo is None:
+              raise SystemExit("Expires must include a timezone")
+
+          now = datetime.now(timezone.utc)
+          if expires <= now:
+              raise SystemExit(f"security.txt expired at {expires.isoformat()}")
+          PY
