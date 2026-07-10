@@ -89,7 +89,7 @@ to call:
 
 | `--role` | Tools |
 |---|---|
-| `supervisor` | Definition sessions: `enqueue_task`, `create_spec`; task sessions: `wait_for_review`, `review_pending`, `approve`, `reject`, `wait_for_consultation`, `respond_consult`, `ask_human`, `wait_for_answer`, `heartbeat` |
+| `supervisor` | Definition sessions: `enqueue_task`, `create_spec`, `archive_spec`; task sessions: `wait_for_review`, `review_pending`, `approve`, `reject`, `wait_for_consultation`, `respond_consult`, `ask_human`, `wait_for_answer`, `heartbeat` |
 | `executor` | `wait_for_task`, `check`, `consult`, `submit`, `wait_for_consult`, `ask_human`, `wait_for_answer`, `status`, `reset`, `heartbeat` |
 | *(omitted)* | All tools, plus compatibility aliases `create_task` and `answer` |
 

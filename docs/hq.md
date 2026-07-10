@@ -20,7 +20,8 @@ and retry/cycle counters in real time.
 | Command | Description |
 |---|---|
 | `/plan` | Free-form planning session with the supervisor (no task created). |
-| `/spec` | Draft a feature specification with the supervisor and save it as a Markdown artifact you can later feed into `/task`. |
+| `/spec` | Draft a feature specification with the supervisor and save it as a Markdown artifact you can later feed into `/task`. Offers to archive the currently selected spec first if it is already complete. |
+| `/archive-spec` | Summarize the completed selected spec's work into an `## Outcome` section and archive its linked task and run artifacts. |
 | `/milestones` | Select the current spec and milestone without creating a task. |
 | `/task` | Queue one task from the next ready milestone with the supervisor, then run the SQLite scheduler. Supports `--manual` to skip milestone resolution and define a free-form task. |
 | `/run [--limit N]` | Plan a **batch** run: queue tasks for every ready milestone in the selected spec (or up to `--limit`) and let the scheduler dispatch executors for all of them, bounded by `max_parallel_tasks`. |
@@ -94,8 +95,16 @@ touching the task state or task files. Use it when you want to work on an
 ad-hoc task with no spec context, or when the selection is stale and you
 don't need to pick a new one right away.
 
+Once every milestone in the selected spec is complete, `/archive-spec`
+closes it out: the supervisor summarizes what actually shipped into an
+`## Outcome` section on the spec, and — after you approve that text — the
+linked task and run artifacts are moved into a machine-local archive so
+`.ferrus/tasks/` and `.ferrus/runs/` stay focused on active work. `/spec`
+offers the same archival step automatically when the spec you currently
+have selected is already finished.
+
 See the [Specs & Milestones guide](/docs/spec-and-milestones) for the full
-workflow, spec file format, and auto-advance behaviour.
+workflow, spec file format, auto-advance, and spec archival behaviour.
 
 ## Consultation (`/consult`)
 

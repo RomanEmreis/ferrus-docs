@@ -161,6 +161,7 @@ intent and run artifacts, not a mirrored state machine.
 |---|---|
 | `project.toml` | Project id, name, workspace path, `.ferrus` path, git metadata, timestamps, schema version |
 | `ferrus.db` | SQLite source of truth for tasks, runs, events, leases, counters, and project runtime state |
+| `archive/specs/<spec-slug>-<closed-at>/` | Completed-spec archives written by `/archive-spec`: `manifest.toml`, a copy of `spec.md`, and the relocated `tasks/` and `runs/` artifacts |
 | `logs/` | Reserved for machine-local logs that should not be committed |
 
 `ferrus init` automatically adds `.ferrus/` to your `.gitignore`. On HQ
