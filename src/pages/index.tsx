@@ -39,7 +39,7 @@ function Hero() {
           </Link>
         </div>
         <div className={styles.badgeRow}>
-          <span className={styles.badge}>alpha · v0.3.0</span>
+          <span className={styles.badge}>alpha · v0.3.1</span>
           <span className={styles.badge}>Apache-2.0</span>
           <span className={styles.badge}>Rust 1.95+</span>
         </div>
@@ -71,7 +71,7 @@ function Install() {
           <CodeBlock language="bash">{`# stable — published on crates.io
 cargo install ferrus
 # or pin an exact version:
-cargo install --locked ferrus@0.3.0-alpha.2`}</CodeBlock>
+cargo install --locked ferrus@0.3.1-alpha.1`}</CodeBlock>
         </div>  
 
         <div>
