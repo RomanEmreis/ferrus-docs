@@ -102,7 +102,8 @@ function QuickStart() {
 ferrus register --supervisor claude-code --executor codex    # write agent configs
 ferrus                                                       # enter HQ`}</CodeBlock>
         <p className={styles.sectionLead}>
-          Inside HQ, type <code>/task</code>. A supervisor spawns, you describe
+          Inside HQ, type <code>/spec</code> to draft a written spec first,
+          or <code>/task</code> to go straight in. A supervisor spawns, you describe
           what you want, and the Executor → Reviewer loop runs automatically
           until the task is <strong style={{color: 'var(--ferrus-green)'}}>Complete</strong>.
         </p>
