@@ -1,10 +1,10 @@
 # ferrus-docs
 
-Documentation site for [**ferrus**](https://github.com/RomanEmreis/ferrus) —
+Documentation site for [**ferrus**](https://github.com/ferrus-dev/ferrus) —
 deterministic orchestration of AI agents for real software work.
 
 Built with [Docusaurus](https://docusaurus.io/) and deployed to
-[GitHub Pages](https://romanemreis.github.io/ferrus-docs/).
+[ferrus.dev](https://ferrus.dev/).
 
 ## Local development
 

@@ -16,12 +16,12 @@ const config: Config = {
   url: 'https://ferrus.dev',
   baseUrl: '/',
   // Set the production url of your site here
-  //url: 'https://romanemreis.github.io',
+  //url: 'https://ferrus.dev',
   // For GitHub pages deployment under /<projectName>/
   //baseUrl: '/ferrus-docs/',
 
   // GitHub pages deployment config.
-  organizationName: 'RomanEmreis',
+  organizationName: 'ferrus-dev',
   projectName: 'ferrus-docs',
   trailingSlash: false,
 
@@ -46,7 +46,7 @@ const config: Config = {
           sidebarPath: './sidebars.ts',
           routeBasePath: 'docs',
           editUrl:
-            'https://github.com/RomanEmreis/ferrus-docs/tree/main/',
+            'https://github.com/ferrus-dev/ferrus-docs/tree/main/',
         },
         blog: false,
         theme: {
@@ -88,7 +88,7 @@ const config: Config = {
           className: 'navbar__link--accent',
         },
         {
-          href: 'https://github.com/RomanEmreis/ferrus',
+          href: 'https://github.com/ferrus-dev/ferrus',
           label: 'GitHub',
           position: 'right',
         },
@@ -113,7 +113,7 @@ const config: Config = {
           items: [
             {
               label: 'GitHub',
-              href: 'https://github.com/RomanEmreis/ferrus',
+              href: 'https://github.com/ferrus-dev/ferrus',
             },
             {
               label: 'crates.io',
@@ -121,7 +121,7 @@ const config: Config = {
             },
             {
               label: 'Issues',
-              href: 'https://github.com/RomanEmreis/ferrus/issues',
+              href: 'https://github.com/ferrus-dev/ferrus/issues',
             },
           ],
         },
@@ -130,11 +130,11 @@ const config: Config = {
           items: [
             {
               label: 'License (Apache 2.0)',
-              href: 'https://github.com/RomanEmreis/ferrus/blob/main/LICENSE',
+              href: 'https://github.com/ferrus-dev/ferrus/blob/main/LICENSE',
             },
             {
               label: 'Contributing',
-              href: 'https://github.com/RomanEmreis/ferrus/blob/main/CONTRIBUTING.md',
+              href: 'https://github.com/ferrus-dev/ferrus/blob/main/CONTRIBUTING.md',
             },
             {label: 'About', to: '/about'},
             {label: 'Contact', to: '/contact'},

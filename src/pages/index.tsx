@@ -34,7 +34,7 @@ function Hero() {
           </Link>
           <Link
             className="button button--secondary button--lg"
-            href="https://github.com/RomanEmreis/ferrus">
+            href="https://github.com/ferrus-dev/ferrus">
             GitHub →
           </Link>
         </div>
@@ -77,7 +77,7 @@ cargo install --locked ferrus@0.3.1-alpha.1`}</CodeBlock>
         <div>
           <h3 className={styles.colTitle}>From source</h3>
           <CodeBlock language="bash">{`# latest main — tracks the repo
-git clone https://github.com/RomanEmreis/ferrus
+git clone https://github.com/ferrus-dev/ferrus
 cd ferrus
 cargo install --path .`}</CodeBlock>
         </div>

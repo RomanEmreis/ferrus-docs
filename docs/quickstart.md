@@ -24,7 +24,7 @@ cargo install ferrus
 Or build from source:
 
 ```bash
-git clone https://github.com/RomanEmreis/ferrus
+git clone https://github.com/ferrus-dev/ferrus
 cd ferrus
 cargo install --path .
 ```

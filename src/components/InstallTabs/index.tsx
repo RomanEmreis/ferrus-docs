@@ -16,14 +16,14 @@ const INSTALL_OPTIONS: Array<{
     label: 'Windows',
     language: 'powershell',
     command:
-      'iwr https://github.com/RomanEmreis/ferrus/releases/latest/download/install.ps1 -useb | iex',
+      'iwr https://github.com/ferrus-dev/ferrus/releases/latest/download/install.ps1 -useb | iex',
   },
   {
     id: 'unix',
     label: 'Linux/macOS',
     language: 'bash',
     command:
-      'curl -fsSL https://github.com/RomanEmreis/ferrus/releases/latest/download/install.sh | sh',
+      'curl -fsSL https://github.com/ferrus-dev/ferrus/releases/latest/download/install.sh | sh',
   },
 ];
 
