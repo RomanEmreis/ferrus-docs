@@ -54,14 +54,8 @@ export default function About(): ReactNode {
             <ul className={styles.sectionLead}>
               <li>
                 Source:{' '}
-                <Link href="https://github.com/RomanEmreis/ferrus">
+                <Link href="https://github.com/ferrus-dev/ferrus">
                   GitHub
-                </Link>
-              </li>
-              <li>
-                Mirror:{' '}
-                <Link href="https://codeberg.org/RomanEmreis/ferrus">
-                  Codeberg
                 </Link>
               </li>
               <li>

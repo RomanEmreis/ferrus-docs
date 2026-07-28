@@ -21,13 +21,13 @@ export default function Contact(): ReactNode {
             </p>
             <ul className={styles.sectionLead}>
               <li>
-                <Link href="https://github.com/RomanEmreis/ferrus/issues">
+                <Link href="https://github.com/ferrus-dev/ferrus/issues">
                   GitHub Issues
                 </Link>{' '}
                 — bug reports and feature requests
               </li>
               <li>
-                <Link href="https://github.com/RomanEmreis/ferrus/discussions">
+                <Link href="https://github.com/ferrus-dev/ferrus/discussions">
                   GitHub Discussions
                 </Link>{' '}
                 — questions and ideas
