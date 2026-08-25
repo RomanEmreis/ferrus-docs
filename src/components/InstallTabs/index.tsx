@@ -15,15 +15,13 @@ const INSTALL_OPTIONS: Array<{
     id: 'windows',
     label: 'Windows',
     language: 'powershell',
-    command:
-      'iwr https://github.com/ferrus-dev/ferrus/releases/latest/download/install.ps1 -useb | iex',
+    command: 'irm https://ferrus.dev/cli/install.ps1 | iex',
   },
   {
     id: 'unix',
     label: 'Linux/macOS',
     language: 'bash',
-    command:
-      'curl -fsSL https://github.com/ferrus-dev/ferrus/releases/latest/download/install.sh | sh',
+    command: 'curl -fsSL https://ferrus.dev/cli/install.sh | sh',
   },
 ];
 
