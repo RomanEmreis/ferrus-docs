@@ -39,7 +39,7 @@ function Hero() {
           </Link>
         </div>
         <div className={styles.badgeRow}>
-          <span className={styles.badge}>alpha · v0.3.1</span>
+          <span className={styles.badge}>alpha · v0.4.0</span>
           <span className={styles.badge}>Apache-2.0</span>
           <span className={styles.badge}>Rust 1.95+</span>
         </div>
@@ -71,7 +71,7 @@ function Install() {
           <CodeBlock language="bash">{`# stable — published on crates.io
 cargo install ferrus
 # or pin an exact version:
-cargo install --locked ferrus@0.3.1-alpha.1`}</CodeBlock>
+cargo install --locked ferrus@0.4.0-alpha.1`}</CodeBlock>
         </div>  
 
         <div>
@@ -112,6 +112,38 @@ ferrus                                                       # enter HQ`}</CodeB
   );
 }
 
+function RepositoryGraph() {
+  return (
+    <section className={styles.section}>
+      <div className="container">
+        <Heading as="h2" className={styles.sectionTitle}>
+          <span className={styles.prompt}>$</span> Repository graph
+        </Heading>
+        <p className={styles.sectionLead}>
+          New in 0.4: an optional, machine-local structural index of your
+          repository. Agents query it by symbol, path, and relationship instead
+          of re-grepping the codebase on every spawn — and every fact comes back
+          with its evidence location, extractor, and confidence.
+        </p>
+        <CodeBlock language="bash">{`ferrus graph index                        # build the snapshot (incremental)
+ferrus graph status                       # availability, freshness, fact counts
+ferrus graph search RuntimeTaskContext    # ranked, evidence-backed lookup
+ferrus graph context --symbol <key>       # bounded context packet`}</CodeBlock>
+        <p className={styles.sectionLead}>
+          Snapshots are immutable and atomically published. Executors query
+          their own worktree view — a pinned baseline plus a changed-file
+          overlay — so parallel tasks never see each other's work in progress.
+          The index is opt-in, entirely local, rebuildable, and safe to delete:
+          an absent graph never blocks the task loop.
+        </p>
+        <p className={styles.sectionLead}>
+          <Link to="/docs/repository-graph">Read the repository graph docs →</Link>
+        </p>
+      </div>
+    </section>
+  );
+}
+
 function Features() {
   const features = [
     {
@@ -130,9 +162,17 @@ function Features() {
       title: 'No hidden context',
       body: 'Everything the agents see lives in plain files you can read, scoped per task under .ferrus/tasks/ and .ferrus/runs/.',
     },
+    {
+      title: 'Repository-aware',
+      body: 'An optional local graph indexes structure, symbols, and relationships so agents navigate instead of rediscovering — every fact evidence-backed and snapshot-pinned.',
+    },
+    {
+      title: 'Remembers decisions',
+      body: 'Project memory keeps approved outcomes, milestones, and deviations queryable, so settled questions stay settled across specs.',
+    },
   ];
   return (
-    <section className={styles.section}>
+    <section className={clsx(styles.section, styles.sectionAlt)}>
       <div className="container">
         <Heading as="h2" className={styles.sectionTitle}>
           <span className={styles.prompt}>$</span> Why ferrus
@@ -160,6 +200,7 @@ export default function Home(): ReactNode {
       <main>
         <Install />
         <QuickStart />
+        <RepositoryGraph />
         <Features />
       </main>
     </Layout>

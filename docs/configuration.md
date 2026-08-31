@@ -35,6 +35,9 @@ heartbeat_interval_secs = 30    # how often agents should call heartbeat
 [spec]
 directory = "docs/specs"        # where /create_spec writes approved specs
 
+[repository_graph]              # optional; NOT scaffolded by `ferrus init`
+enabled = true                  # opt into the local repository graph + project memory
+
 [hq.supervisor]
 agent = "claude-code"    # agent for supervisor/reviewer role: claude-code | codex | qwen-code | goose | opencode
 model = ""                # optional override; empty = agent default
@@ -108,6 +111,114 @@ in `ferrus.db`.
 directory = "docs/specs"  # any path inside the project; created on first write
 ```
 
+## `[repository_graph]`
+
+The optional [repository graph](/docs/repository-graph) and
+[project memory](/docs/project-memory) indexes. This namespace is **not written
+by `ferrus init`** — add it yourself to opt in:
+
+```toml
+[repository_graph]
+enabled = true
+```
+
+Everything else has a default. Omitting the namespace entirely means the
+optional indexes stay off and ordinary orchestration is unaffected.
+
+### Namespaces
+
+| Namespace | Purpose | Affects snapshot identity |
+|---|---|---|
+| `[repository_graph]` | `enabled`, backend selection | No — operational |
+| `[repository_graph.source]` | Included content, untracked/generated/vendor policy, ordered ignore rules, sensitive paths | **Yes** |
+| `[repository_graph.analyzers]` | Enabled extractors and their semantic settings | **Yes** |
+| `[repository_graph.index_limits]` | Limits that can include, skip, or truncate a file during extraction | **Yes** |
+| `[repository_graph.query_limits]` | Result, byte, depth, duration, snippet, and diagnostic budgets | No |
+| `[repository_graph.retention]` | Snapshot and failed-build cleanup policy | No |
+| `[repository_graph.memory]` | Authorized project-memory sources and extraction policy | Memory revision only |
+| `[repository_graph.semantic]` | Reserved for future embedding/chunking policy | Semantic projection only |
+| `[repository_graph.remote]` | Reserved endpoint, credential reference, upload policy | No |
+| `[repository_graph.telemetry]` | Privacy-safe query metrics | No |
+
+The "affects snapshot identity" column is the one that matters day to day:
+changing a query budget or retention rule **never** invalidates your index,
+while changing what gets indexed does. Configuration is hashed as a canonical
+semantic projection, not as raw TOML — whitespace, key ordering, and explicitly
+writing out a default all produce the same digest. Credentials, tokens, and
+endpoints never participate in identity and never appear in diagnostics.
+
+### `[repository_graph.source]`
+
+```toml
+[repository_graph.source]
+include = ["**/*"]                         # set-like; order is not significant
+rules = [".git/**", ".ferrus/**"]          # ordered ignore/negation rules; order IS significant
+sensitive = [                              # never read, never extracted, never uploaded
+    "**/.env", "**/.env.*",
+    "**/*.key", "**/*.pem", "**/*.p12", "**/*.pfx",
+    "**/id_rsa", "**/id_ed25519",
+]
+include_untracked = true
+include_generated = false
+include_vendor = false
+```
+
+Sensitive-path policy is applied **before** extraction, not after.
+
+### `[repository_graph.index_limits]`
+
+Bounds one indexing pass. Defaults:
+
+| Key | Default |
+|---|---|
+| `max_files` | `100000` |
+| `max_directories` | `100000` |
+| `max_file_bytes` | `2097152` (2 MiB) |
+| `max_total_bytes` | `536870912` (512 MiB) |
+| `max_facts_per_file` | `100000` |
+| `max_parser_duration_ms` | `2000` |
+| `max_resolved_relationships` | `1000000` |
+| `max_resolver_duration_ms` | `10000` |
+| `max_diagnostics` | `1000` |
+
+### `[repository_graph.query_limits]`
+
+Bounds every CLI and MCP read. The configured cap always wins over a caller's
+requested budget; exceeding one returns the deterministic prefix that fits plus
+an explicit truncation reason.
+
+| Key | Default |
+|---|---|
+| `max_results` | `100` |
+| `max_bytes` | `262144` (256 KiB) |
+| `max_snippet_bytes` | `32768` (32 KiB) |
+| `max_depth` | `3` |
+| `max_duration_ms` | `2000` |
+| `max_diagnostics` | `50` |
+
+### `[repository_graph.retention]`
+
+```toml
+[repository_graph.retention]
+max_snapshots = 5
+max_failed_builds = 10
+```
+
+Snapshots pinned by an active task are retained regardless.
+
+### `[repository_graph.telemetry]`
+
+```toml
+[repository_graph.telemetry]
+enabled = true
+```
+
+Emits one structured tracing metric per query: tool name, repository/task/run/
+snapshot identities, freshness, duration, result count, response bytes,
+truncation reason, diagnostic count, and error category. The metric types
+**cannot represent** request text, filters, repository paths, snippets, or
+source bodies. Off by default.
+
 ## `[hq.supervisor]` and `[hq.executor]`
 
 Which coding agent plays which role. Change these to swap backends without
@@ -161,6 +272,8 @@ intent and run artifacts, not a mirrored state machine.
 |---|---|
 | `project.toml` | Project id, name, workspace path, `.ferrus` path, git metadata, timestamps, schema version |
 | `ferrus.db` | SQLite source of truth for tasks, runs, events, leases, counters, and project runtime state |
+| `repo-graph.db` | Derived [repository graph](/docs/repository-graph) facts. Optional and rebuildable — safe to delete |
+| `project-memory.db` | Derived [project memory](/docs/project-memory) revisions. Optional and rebuildable — safe to delete |
 | `archive/specs/<spec-slug>-<closed-at>/` | Completed-spec archives written by `/archive-spec`: `manifest.toml`, a copy of `spec.md`, and the relocated `tasks/` and `runs/` artifacts |
 | `logs/` | Reserved for machine-local logs that should not be committed |
 
