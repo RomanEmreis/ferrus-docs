@@ -102,6 +102,30 @@ summary and files the spent task/run artifacts away — see the
 Press **Ctrl+C** twice within 2 seconds to exit HQ.
 :::
 
+## 5. (Optional) Index your repository
+
+ferrus can build a local structural index of your codebase so agents navigate
+it by symbol and relationship instead of re-grepping it on every spawn. It is
+opt-in — add the namespace to `ferrus.toml`:
+
+```toml
+[repository_graph]
+enabled = true
+```
+
+Then build it:
+
+```bash
+ferrus graph index
+ferrus graph status
+ferrus graph search MyType --limit 10
+```
+
+The index lives in its own machine-local SQLite sidecar, is rebuildable, and is
+safe to delete at any time — an absent index never blocks the task loop. See
+[Repository graph](/docs/repository-graph) and
+[Project memory](/docs/project-memory).
+
 ## What happens next
 
 ```text

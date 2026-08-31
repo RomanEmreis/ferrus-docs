@@ -67,6 +67,23 @@ up; `/run [--limit N]` queues every ready milestone in the selected spec (or
 up to `--limit`) in one shot so the scheduler can work through several tasks
 in parallel.
 
+## Pinned repository views
+
+If the optional [repository graph](/docs/repository-graph) is enabled, each task
+also carries a **repository view reference**: the immutable baseline snapshot
+matching the task's pinned Ferrus baseline Git tree, plus an overlay derived
+from that worktree's changed, added, and deleted files.
+
+This keeps structural context as isolated as the worktree itself. A newer
+canonical snapshot does not make a running task's baseline stale; only that
+task's own edits invalidate its overlay. On submission the view is frozen
+alongside its Git tree, so the reviewer reads exactly what was submitted.
+
+Indexing is never a correctness dependency of this state machine. If a view is
+missing, stale, or failed, the tools say so and the agent falls back to reading
+source — dispatch, checks, submission, review, and approval all proceed
+regardless.
+
 ## Retry and review budgets
 
 Three counters guard the loop, all configured in `ferrus.toml` under

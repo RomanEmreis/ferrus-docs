@@ -98,6 +98,27 @@ physically cannot call `approve`, and a supervisor physically cannot call
 `submit`. This is what makes the loop safe to drive from "untrusted"
 agents.
 
+### Retrieval tools
+
+When the optional [repository graph](/docs/repository-graph) is configured,
+**every** role — supervisor, executor, and the unfiltered server — additionally
+gets the same six **read-only** retrieval tools:
+
+| Tool | Domain |
+|---|---|
+| `repository_graph_status` | Repository graph availability, freshness, task-view status |
+| `repository_search` | Bounded ranked structural search |
+| `repository_context` | Bounded context assembly, with opt-in verified snippets |
+| `project_memory_status` | [Project memory](/docs/project-memory) revision, freshness, source policy |
+| `project_context_search` | Bounded search across `repository`, `memory`, or `all` |
+| `project_context` | Bounded federated context assembly |
+
+None of them resolves, claims, renews, or mutates a task lease, and none of
+them builds an index. Their output is never injected into task or review
+prompts — an agent has to ask. An executor working in a managed worktree is
+answered from that task's own pinned baseline-plus-overlay view, never from
+canonical `latest`.
+
 ## Skill files
 
 `ferrus init` creates skill files under your `--agents-path`

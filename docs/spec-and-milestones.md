@@ -170,6 +170,14 @@ The spec file itself stays in your repository, now carrying its `## Outcome`
 summary; only the machine-local task/run scratch artifacts are relocated, so
 `.ferrus/tasks/` and `.ferrus/runs/` stay focused on active work.
 
+That approved `## Outcome` is also the one thing
+[project memory](/docs/project-memory) indexes verbatim. If the optional index
+is enabled, ferrus refreshes it right after the archive transaction commits —
+outside the archive's critical path, so a refresh failure can never undo a
+successful archive — and future agents can then query the decision with
+`ferrus graph search ... --domain memory` instead of re-reading raw task
+artifacts that no longer exist in the checkout.
+
 ### Preconditions
 
 `/archive-spec` refuses to run — with a specific message — unless all of these

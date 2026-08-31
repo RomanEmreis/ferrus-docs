@@ -7,6 +7,12 @@ const sidebars: SidebarsConfig = {
     'hq',
     'spec-and-milestones',
     'state-machine',
+    {
+      type: 'category',
+      label: 'Repository intelligence',
+      collapsed: false,
+      items: ['repository-graph', 'project-memory'],
+    },
     'agents',
     'migration',
     'local-models',
