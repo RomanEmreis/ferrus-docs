@@ -39,7 +39,7 @@ function Hero() {
           </Link>
         </div>
         <div className={styles.badgeRow}>
-          <span className={styles.badge}>alpha · v0.4.0</span>
+          <span className={styles.badge}>alpha · v0.4.1</span>
           <span className={styles.badge}>Apache-2.0</span>
           <span className={styles.badge}>Rust 1.95+</span>
         </div>
@@ -54,16 +54,16 @@ function Install() {
     <div className="container">
       <Heading as="h2" className={styles.sectionTitle}>
         <span className={styles.prompt}>$</span> Install
-      </Heading>  
+      </Heading>
 
       <p className={styles.sectionLead}>
         ferrus ships as a single Rust crate. Install it with a single command, from crates.io or build from source.
-      </p>  
+      </p>
 
       <div className={styles.installPrimary}>
         <h3 className={styles.colTitle}>Quick install</h3>
         <InstallTabs />
-      </div>  
+      </div>
 
       <div className={styles.twoCol}>
         <div>
@@ -71,8 +71,8 @@ function Install() {
           <CodeBlock language="bash">{`# stable — published on crates.io
 cargo install ferrus
 # or pin an exact version:
-cargo install --locked ferrus@0.4.0-alpha.1`}</CodeBlock>
-        </div>  
+cargo install --locked ferrus@0.4.1-alpha.1`}</CodeBlock>
+        </div>
 
         <div>
           <h3 className={styles.colTitle}>From source</h3>
